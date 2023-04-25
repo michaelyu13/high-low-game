@@ -1,0 +1,60 @@
+@import-normalize;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+$spacing: 1rem;
+$spacing-medium: 2rem;
+
+/*
+  Notes:
+
+  Tablet Breakpoint = 768px
+  Desktop Breakpoint = 1024px
+*/
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: $spacing-medium $spacing $spacing;
+
+  .button {
+    padding: $spacing;
+    width: 200px;
+
+    font-size: 24px;
+  }
+
+  .buttons-wrapper,
+  .card-number {
+    margin-bottom: $spacing;
+  }
+
+  .game-container {
+    img {
+      margin-bottom: $spacing;
+    }
+  }
+
+  .card-progress-wrapper {
+    display: flex;
+    gap: 5rem;
+    align-items: center;
+
+    .card-progress {
+      img {
+        width: 200px;
+      }
+    }
+  }
+
+  .credit {
+    position: absolute;
+    bottom: 1rem;
+  }
+}
