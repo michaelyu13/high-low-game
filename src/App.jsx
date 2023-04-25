@@ -3,6 +3,7 @@ import './App.scss'
 
 function App() {
   const [deckOfCards, setDeckOfCards] = useState([]);
+  const [currentCardNumber, setCurrentCardNumber] = useState(0);
   const sideEffectRanOnceAfterInitialRender = useRef(false);
 
   useEffect(() => {
@@ -35,16 +36,28 @@ function App() {
     setDeckOfCards(playingCards);
   }
 
+  const handlePlayClick = () => {
+    showCurrentCard();
+  }
+
+  const showCurrentCard = () => {
+    incrementCurrentCardNumber();
+  }
+
+  const incrementCurrentCardNumber = () => {
+    setCurrentCardNumber(currentCardNumber + 1);
+  }
+
   return (
     <div className="game-container">
       <h1>High-Low Game</h1>
 
       <div className="buttons-wrapper">
-        <button type="button" className="button button-play">Play</button>
+        <button type="button" className="button button-play" onClick={() => handlePlayClick()}>Play</button>
       </div>
 
       <div className="card-number">
-          <span className="current-card-number">1</span>/5
+        <span className="current-card-number">{currentCardNumber}</span>/5
       </div>
 
       <div className="card-progress-wrapper">
