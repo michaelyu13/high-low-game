@@ -4,6 +4,7 @@ import './App.scss'
 function App() {
   const [deckOfCards, setDeckOfCards] = useState([]);
   const [currentCardNumber, setCurrentCardNumber] = useState(0);
+  const [selectedRandomCardId, setSelectedRandomCardId] = useState();
   const sideEffectRanOnceAfterInitialRender = useRef(false);
 
   useEffect(() => {
@@ -42,11 +43,24 @@ function App() {
 
   const showCurrentCard = () => {
     incrementCurrentCardNumber();
+    selectRandomCard();
   }
 
   const incrementCurrentCardNumber = () => {
     setCurrentCardNumber(currentCardNumber + 1);
   }
+
+  const selectRandomCard = () => {
+    let selectedRandomCard = Math.floor(Math.random() * deckOfCards.length);
+
+    setSelectedRandomCardId(deckOfCards[selectedRandomCard].id);
+    removeCardFromDeck(selectedRandomCardId);
+  }
+
+  function removeCardFromDeck(id) {
+    setDeckOfCards(deckOfCards.filter(card => card.id !== id))
+  }
+
 
   return (
     <div className="game-container">
