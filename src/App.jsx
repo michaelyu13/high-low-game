@@ -4,17 +4,51 @@ import './App.scss'
 function App() {
   const [deckOfCards, setDeckOfCards] = useState([]);
   const [currentCardNumber, setCurrentCardNumber] = useState(0);
-  const [selectedRandomCardId, setSelectedRandomCardId] = useState();
+
+  const cardImage = "card-back";
+
+  const [cardImage1, setCardImage1] = useState(cardImage);
+  const [cardImage2, setCardImage2] = useState(cardImage);
+  const [cardImage3, setCardImage3] = useState(cardImage);
+  const [cardImage4, setCardImage4] = useState(cardImage);
+  const [cardImage5, setCardImage5] = useState(cardImage);
+
   const sideEffectRanOnceAfterInitialRender = useRef(false);
 
   useEffect(() => {
     if (sideEffectRanOnceAfterInitialRender.current === false) {
-
       createDeckOfCards();
-
       sideEffectRanOnceAfterInitialRender.current = true;
     }
   })
+
+  useEffect(() => {
+    if (deckOfCards.length === 0) return
+
+    const randomCardFromDeck = Math.floor(Math.random() * deckOfCards.length);
+
+    setDeckOfCards(deckOfCards.filter(card => card.id !== deckOfCards[randomCardFromDeck].id))
+
+    const selectedCard = deckOfCards[randomCardFromDeck];
+
+    switch (currentCardNumber) {
+      case 1:
+        setCardImage1(`${selectedCard.suit}-${selectedCard.rank}`);
+        break;
+      case 2:
+        setCardImage2(`${selectedCard.suit}-${selectedCard.rank}`);
+        break;
+      case 3:
+        setCardImage3(`${selectedCard.suit}-${selectedCard.rank}`);
+        break;
+      case 4:
+        setCardImage4(`${selectedCard.suit}-${selectedCard.rank}`);
+        break;
+      case 5:
+        setCardImage5(`${selectedCard.suit}-${selectedCard.rank}`);
+        break;
+    }
+  }, [currentCardNumber])
 
   const createDeckOfCards = () => {
     const cardSuits = ['spades', 'hearts', 'clubs', 'diamonds'];
@@ -27,8 +61,8 @@ function App() {
         playingCards.push(
           {
             id: crypto.randomUUID(),
-            rank: cardRanks[j],
-            suit: cardSuits[i]
+            suit: cardSuits[i],
+            rank: cardRanks[j]
           }
         )
       }
@@ -38,29 +72,12 @@ function App() {
   }
 
   const handlePlayClick = () => {
-    showCurrentCard();
-  }
-
-  const showCurrentCard = () => {
     incrementCurrentCardNumber();
-    selectRandomCard();
   }
 
   const incrementCurrentCardNumber = () => {
     setCurrentCardNumber(currentCardNumber + 1);
   }
-
-  const selectRandomCard = () => {
-    let selectedRandomCard = Math.floor(Math.random() * deckOfCards.length);
-
-    setSelectedRandomCardId(deckOfCards[selectedRandomCard].id);
-    removeCardFromDeck(selectedRandomCardId);
-  }
-
-  function removeCardFromDeck(id) {
-    setDeckOfCards(deckOfCards.filter(card => card.id !== id))
-  }
-
 
   return (
     <div className="game-container">
@@ -78,7 +95,7 @@ function App() {
         <div className="card-progress card-1">
           <div className="card">
             <div className="card-back">
-              <img src="src/img/cards/card-back.png" alt="" />
+              <img src={`src/img/cards/${cardImage1}.png`} alt="" />
             </div>
           </div>
         </div>
@@ -86,7 +103,7 @@ function App() {
         <div className="card-progress card-2">
           <div className="card">
             <div className="card-back">
-              <img src="src/img/cards/card-back.png" alt="" />
+              <img src={`src/img/cards/${cardImage2}.png`} alt="" />
             </div>
           </div>
         </div>
@@ -94,7 +111,7 @@ function App() {
         <div className="card-progress card-3">
           <div className="card">
             <div className="card-back">
-              <img src="src/img/cards/card-back.png" alt="" />
+              <img src={`src/img/cards/${cardImage3}.png`} alt="" />
             </div>
           </div>
         </div>
@@ -102,7 +119,7 @@ function App() {
         <div className="card-progress card-4">
           <div className="card">
             <div className="card-back">
-              <img src="src/img/cards/card-back.png" alt="" />
+              <img src={`src/img/cards/${cardImage4}.png`} alt="" />
             </div>
           </div>
         </div>
@@ -110,7 +127,7 @@ function App() {
         <div className="card-progress card-5">
           <div className="card">
             <div className="card-back">
-              <img src="src/img/cards/card-back.png" alt="" />
+              <img src={`src/img/cards/${cardImage5}.png`} alt="" />
             </div>
           </div>
         </div>
