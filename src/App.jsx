@@ -7,6 +7,8 @@ function App() {
   const [currentCardRank, setCurrentCardRank] = useState(0);
   const [previousCardRank, setPreviousCardRank] = useState(0);
   const [guess, setGuess] = useState('');
+  const [resultMessage, setResultMessage] = useState('');
+  const [isGameOver, setIsGameOver] = useState(false);
 
   const cardImage = "card-back";
 
@@ -58,22 +60,21 @@ function App() {
   useEffect(() => {
     if (currentCardRank === 0) return
 
-    setPreviousCardRank(currentCardRank);
-
-    if(guess === 'lower') {
-      if (currentCardRank < previousCardRank) {
-        console.log('LOWER - CORRECT');
-      } else {
-        console.log('LOWER - WRONG');
-      }
+    if (currentCardNumber === 5) {
+      setResultMessage('Congratulations. You got them all correct!');
+      gameOver();
     }
 
-    if(guess === 'higher') {
-      if (currentCardRank > previousCardRank) {
-        console.log('HIGHER - CORRECT');
-      } else {
-        console.log('HIGHER - WRONG');
-      }
+    setPreviousCardRank(currentCardRank);
+
+    if (guess === 'lower' && currentCardRank > previousCardRank) {
+      showLoseMessage();
+      gameOver();
+    }
+
+    if (guess === 'higher' && currentCardRank < previousCardRank) {
+      showLoseMessage();
+      gameOver();
     }
   }, [currentCardRank])
 
@@ -102,20 +103,22 @@ function App() {
     incrementCurrentCardNumber();
   }
 
+  const handleGuessClick = (e) => {
+    incrementCurrentCardNumber();
+    setPreviousCardRank(currentCardRank);
+    setGuess(e.target.value);
+  }
+
   const incrementCurrentCardNumber = () => {
     setCurrentCardNumber(currentCardNumber + 1);
   }
 
-  const handleLowerClick = (e) => {
-    incrementCurrentCardNumber();
-    setPreviousCardRank(currentCardRank);
-    setGuess(e.target.value);
+  const showLoseMessage = () => {
+    setResultMessage('Sorry, better luck next time.');
   }
 
-  const handleHigherClick = (e) => {
-    incrementCurrentCardNumber();
-    setPreviousCardRank(currentCardRank);
-    setGuess(e.target.value);
+  const gameOver = () => {
+    setIsGameOver(true);
   }
 
   return (
@@ -123,12 +126,12 @@ function App() {
       <h1>High-Low Game</h1>
 
       <div className="buttons-wrapper">
-        <button type="button" className="button button-play" onClick={() => handlePlayClick()}>Play</button>
+        <button type="button" className="button button-play" disabled={currentCardNumber !== 0 ? true : false}  onClick={() => handlePlayClick()}>Play</button>
       </div>
 
       <div className="buttons-wrapper">
-        <button type="button" className="button button-lower" value="lower" onClick={(e) => handleLowerClick(e)}>Lower</button>
-        <button type="button" className="button button-higher" value="higher" onClick={(e) => handleHigherClick(e)}>Higher</button>
+        <button type="button" className="button button-lower" value="lower" disabled={isGameOver ? true : false} onClick={(e) => handleGuessClick(e)}>Lower</button>
+        <button type="button" className="button button-higher" value="higher" disabled={isGameOver ? true : false} onClick={(e) => handleGuessClick(e)}>Higher</button>
       </div>
 
       <div className="card-number">
@@ -176,6 +179,8 @@ function App() {
           </div>
         </div>
       </div>
+
+      <h2>{resultMessage}</h2>
 
       <p className="credit">Card assets are from Boardgame Pack by <a href="http://www.kenney.nl" target="_blank">Kenney</a></p>
     </div>
