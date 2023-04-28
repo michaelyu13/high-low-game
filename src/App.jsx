@@ -4,6 +4,9 @@ import './App.scss'
 function App() {
   const [deckOfCards, setDeckOfCards] = useState([]);
   const [currentCardNumber, setCurrentCardNumber] = useState(0);
+  const [currentCardRank, setCurrentCardRank] = useState(0);
+  const [previousCardRank, setPreviousCardRank] = useState(0);
+  const [guess, setGuess] = useState('');
 
   const cardImage = "card-back";
 
@@ -48,7 +51,31 @@ function App() {
         setCardImage5(`${selectedCard.suit}-${selectedCard.rank}`);
         break;
     }
+
+    setCurrentCardRank(selectedCard.rank);
   }, [currentCardNumber])
+
+  useEffect(() => {
+    if (currentCardRank === 0) return
+
+    setPreviousCardRank(currentCardRank);
+
+    if(guess === 'lower') {
+      if (currentCardRank < previousCardRank) {
+        console.log('LOWER - CORRECT');
+      } else {
+        console.log('LOWER - WRONG');
+      }
+    }
+
+    if(guess === 'higher') {
+      if (currentCardRank > previousCardRank) {
+        console.log('HIGHER - CORRECT');
+      } else {
+        console.log('HIGHER - WRONG');
+      }
+    }
+  }, [currentCardRank])
 
   const createDeckOfCards = () => {
     const cardSuits = ['spades', 'hearts', 'clubs', 'diamonds'];
@@ -79,12 +106,29 @@ function App() {
     setCurrentCardNumber(currentCardNumber + 1);
   }
 
+  const handleLowerClick = (e) => {
+    incrementCurrentCardNumber();
+    setPreviousCardRank(currentCardRank);
+    setGuess(e.target.value);
+  }
+
+  const handleHigherClick = (e) => {
+    incrementCurrentCardNumber();
+    setPreviousCardRank(currentCardRank);
+    setGuess(e.target.value);
+  }
+
   return (
     <div className="game-container">
       <h1>High-Low Game</h1>
 
       <div className="buttons-wrapper">
         <button type="button" className="button button-play" onClick={() => handlePlayClick()}>Play</button>
+      </div>
+
+      <div className="buttons-wrapper">
+        <button type="button" className="button button-lower" value="lower" onClick={(e) => handleLowerClick(e)}>Lower</button>
+        <button type="button" className="button button-higher" value="higher" onClick={(e) => handleHigherClick(e)}>Higher</button>
       </div>
 
       <div className="card-number">
