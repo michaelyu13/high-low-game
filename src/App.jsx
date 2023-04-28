@@ -5,6 +5,7 @@ function App() {
   const cardImage = "card-back";
 
   const [deckOfCards, setDeckOfCards] = useState([]);
+  const [currentCardImage, setCurrentCardImage] = useState(cardImage);
   const [cardImage1, setCardImage1] = useState(cardImage);
   const [cardImage2, setCardImage2] = useState(cardImage);
   const [cardImage3, setCardImage3] = useState(cardImage);
@@ -53,6 +54,7 @@ function App() {
         break;
     }
 
+    setCurrentCardImage(`${selectedCard.suit}-${selectedCard.rank}`);
     setCurrentCardRank(selectedCard.rank);
   }, [currentCardNumber])
 
@@ -108,16 +110,17 @@ function App() {
 
   const handlePlayAgainClick = () => {
     setCurrentCardNumber(1);
-    setCurrentCardRank(0);
-    setPreviousCardRank(0);
-    setGuess('');
-    setResultMessage('');
-    setIsGameOver(false);
+    setCurrentCardImage(cardImage);
     setCardImage1(cardImage);
     setCardImage2(cardImage);
     setCardImage3(cardImage);
     setCardImage4(cardImage);
     setCardImage5(cardImage);
+    setCurrentCardRank(0);
+    setPreviousCardRank(0);
+    setGuess('');
+    setResultMessage('');
+    setIsGameOver(false);
   }
 
   const incrementCurrentCardNumber = () => {
@@ -136,8 +139,10 @@ function App() {
     <div className="game-container">
       <h1>High-Low Game</h1>
 
+      <img src={`src/img/cards/${currentCardImage}.png`} alt="" />
+
       <div className="buttons-wrapper">
-        <button type="button" className="button button-play" disabled={currentCardNumber !== 0 ? true : false}  onClick={() => handlePlayClick()}>Play</button>
+        <button type="button" className="button button-play" disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>Play</button>
       </div>
 
       <div className="buttons-wrapper">
