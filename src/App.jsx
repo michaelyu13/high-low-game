@@ -24,6 +24,11 @@ function App() {
 
     const randomCardFromDeck = Math.floor(Math.random() * deckOfCards.length);
 
+    if (deckOfCards[randomCardFromDeck].rank === previousCardRank) {
+      setResultMessage('Unlucky. You got the same card rank.');
+      gameOver();
+    }
+
     setDeckOfCards(deckOfCards.filter(card => card.id !== deckOfCards[randomCardFromDeck].id))
 
     const selectedCard = deckOfCards[randomCardFromDeck];
@@ -135,19 +140,17 @@ function App() {
       <h1>High-Low Game</h1>
 
       <section>
-        <img src={`src/img/cards/${currentCardImage}.png`} alt="" />
+        <img className="current-card" src={`src/img/cards/${currentCardImage}.png`} alt="" />
       </section>
 
-      <section className="buttons-wrapper">
-        <button type="button" className={`button ${isGameStarted ? "hide" : null }`} disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>Play</button>
+      <section className='buttons-wrapper'>
+        <button type="button" className={`button ${isGameStarted ? "hide" : null }`} disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>PLAY</button>
 
-        <button type="button" className={`button ${isGameStarted ? null : "hide" }`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>Lower</button>
-        <button type="button" className={`button ${isGameStarted ? null : "hide" }`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>Higher</button>
+        <button type="button" className={`button ${isGameStarted ? null : "hide" }`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>LOWER</button>
+        <button type="button" className={`button ${isGameStarted ? null : "hide" }`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>HIGHER</button>
       </section>
 
-      <section className="card-number">
-        <span className="current-card-number">{currentCardNumber}</span>/5
-      </section>
+      <h2 className={`${isGameStarted ? null : "invisible"}`}>{currentCardNumber}/5</h2>
 
       <section className="card-progress-wrapper">
         <div className="card-progress card-1">
@@ -191,9 +194,10 @@ function App() {
         </div>
       </section>
 
-      <h2>{resultMessage}</h2>
-
-      <button type="button" className={`button ${isGameOver ? null : "hide" }`} disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>Play again</button>
+      <div className={`result ${currentCardNumber === 5 ? "result--win" : null} ${isGameOver ? "reveal" : null}`}>
+        <h2>{resultMessage}</h2>
+        <button type="button" className="button" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>PLAY AGAIN</button>
+      </div>
 
       <p className="credit">Card assets are from Boardgame Pack by <a href="http://www.kenney.nl" target="_blank">Kenney</a></p>
     </div>

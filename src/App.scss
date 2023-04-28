@@ -1,5 +1,15 @@
 @import-normalize;
 
+$color-green: #2a603b;
+$color-white: #eee;
+$color-purple: #4d3586;
+$color-red: #973748;
+
+@media only screen and (min-width: 768px) {
+}
+@media only screen and (min-width: 1024px) {
+}
+
 *,
 *::before,
 *::after {
@@ -9,6 +19,7 @@
 $spacing: 1rem;
 $spacing-medium: 2rem;
 
+$font-size-large: 20px;
 /*
   Notes:
 
@@ -16,45 +27,123 @@ $spacing-medium: 2rem;
   Desktop Breakpoint = 1024px
 */
 
+body {
+  background-color: $color-green;
+  color: $color-white;
+}
+
+.hide {
+  display: none;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.show {
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 0;
+
+  text-align: center;
+}
+
+button {
+  // margin-left: 0.5rem;
+  // margin-right: 0.5rem;
+
+  cursor: pointer;
+}
+
+section {
+  margin-bottom: 1rem;
+}
+
 .game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  padding: $spacing-medium $spacing $spacing;
+  margin: 0 auto;
+  border: 6px double $color-white;
+  padding: $spacing;
+
+  max-width: 1200px;
+
+  .current-card {
+    width: 180px;
+
+    @media only screen and (min-width: 768px) {
+      width: 220px;
+    }
+  }
+
+  .buttons-wrapper {
+    display: flex;
+    gap: 2rem;
+  }
 
   .button {
-    padding: $spacing;
-    width: 200px;
+    padding: $spacing 2rem;
 
-    font-size: 24px;
-  }
+    font-size: $font-size-large;
 
-  .buttons-wrapper,
-  .card-number {
-    margin-bottom: $spacing;
-  }
-
-  .game-container {
-    img {
-      margin-bottom: $spacing;
+    &:disabled {
+      cursor: not-allowed;
     }
   }
 
   .card-progress-wrapper {
     display: flex;
-    gap: 5rem;
+    gap: 1rem;
     align-items: center;
+
+    @media only screen and (min-width: 768px) {
+      gap: 3rem;
+    }
 
     .card-progress {
       img {
-        width: 200px;
+        max-width: 200px;
+        width:100%;
       }
+    }
+  }
+
+  .result {
+    position: absolute;
+    top: 9rem;
+
+    border: 5px solid $color-white;
+    padding: 1rem;
+    width: 320px;
+
+    text-align: center;
+    background-color: $color-red;
+
+    opacity: 0;
+    transition: opacity 2s;
+
+    &.result--win {
+      background-color: $color-purple;
+    }
+
+    &.reveal {
+      opacity: 1;
     }
   }
 
   .credit {
     position: absolute;
     bottom: 1rem;
+
+    a {
+      color: $color-white;
+    }
   }
 }
