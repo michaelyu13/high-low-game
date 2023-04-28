@@ -19,15 +19,6 @@ function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
-  const sideEffectRanOnceAfterInitialRender = useRef(false);
-
-  useEffect(() => {
-    if (sideEffectRanOnceAfterInitialRender.current === false) {
-      createDeckOfCards();
-      sideEffectRanOnceAfterInitialRender.current = true;
-    }
-  })
-
   useEffect(() => {
     if (deckOfCards.length === 0) return
 
@@ -78,6 +69,34 @@ function App() {
     }
   }, [currentCardRank])
 
+  const handlePlayClick = () => {
+    createDeckOfCards();
+    incrementCurrentCardNumber();
+    setIsGameStarted(true);
+  }
+
+  const handleGuessClick = (e) => {
+    incrementCurrentCardNumber();
+    setPreviousCardRank(currentCardRank);
+    setGuess(e.target.value);
+  }
+
+  const handlePlayAgainClick = () => {
+    createDeckOfCards();
+    setCurrentCardNumber(1);
+    setCurrentCardImage(cardImage);
+    setCardImage1(cardImage);
+    setCardImage2(cardImage);
+    setCardImage3(cardImage);
+    setCardImage4(cardImage);
+    setCardImage5(cardImage);
+    setCurrentCardRank(0);
+    setPreviousCardRank(0);
+    setGuess('');
+    setResultMessage('');
+    setIsGameOver(false);
+  }
+
   const createDeckOfCards = () => {
     const cardSuits = ['spades', 'hearts', 'clubs', 'diamonds'];
     const cardRanks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
@@ -97,32 +116,6 @@ function App() {
     }
 
     setDeckOfCards(playingCards);
-  }
-
-  const handlePlayClick = () => {
-    incrementCurrentCardNumber();
-    setIsGameStarted(true);
-  }
-
-  const handleGuessClick = (e) => {
-    incrementCurrentCardNumber();
-    setPreviousCardRank(currentCardRank);
-    setGuess(e.target.value);
-  }
-
-  const handlePlayAgainClick = () => {
-    setCurrentCardNumber(1);
-    setCurrentCardImage(cardImage);
-    setCardImage1(cardImage);
-    setCardImage2(cardImage);
-    setCardImage3(cardImage);
-    setCardImage4(cardImage);
-    setCardImage5(cardImage);
-    setCurrentCardRank(0);
-    setPreviousCardRank(0);
-    setGuess('');
-    setResultMessage('');
-    setIsGameOver(false);
   }
 
   const incrementCurrentCardNumber = () => {
