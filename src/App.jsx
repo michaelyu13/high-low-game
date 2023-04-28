@@ -2,21 +2,20 @@ import { useState, useEffect, useRef } from 'react'
 import './App.scss'
 
 function App() {
+  const cardImage = "card-back";
+
   const [deckOfCards, setDeckOfCards] = useState([]);
+  const [cardImage1, setCardImage1] = useState(cardImage);
+  const [cardImage2, setCardImage2] = useState(cardImage);
+  const [cardImage3, setCardImage3] = useState(cardImage);
+  const [cardImage4, setCardImage4] = useState(cardImage);
+  const [cardImage5, setCardImage5] = useState(cardImage);
   const [currentCardNumber, setCurrentCardNumber] = useState(0);
   const [currentCardRank, setCurrentCardRank] = useState(0);
   const [previousCardRank, setPreviousCardRank] = useState(0);
   const [guess, setGuess] = useState('');
   const [resultMessage, setResultMessage] = useState('');
   const [isGameOver, setIsGameOver] = useState(false);
-
-  const cardImage = "card-back";
-
-  const [cardImage1, setCardImage1] = useState(cardImage);
-  const [cardImage2, setCardImage2] = useState(cardImage);
-  const [cardImage3, setCardImage3] = useState(cardImage);
-  const [cardImage4, setCardImage4] = useState(cardImage);
-  const [cardImage5, setCardImage5] = useState(cardImage);
 
   const sideEffectRanOnceAfterInitialRender = useRef(false);
 
@@ -65,8 +64,6 @@ function App() {
       gameOver();
     }
 
-    setPreviousCardRank(currentCardRank);
-
     if (guess === 'lower' && currentCardRank > previousCardRank) {
       showLoseMessage();
       gameOver();
@@ -107,6 +104,20 @@ function App() {
     incrementCurrentCardNumber();
     setPreviousCardRank(currentCardRank);
     setGuess(e.target.value);
+  }
+
+  const handlePlayAgainClick = () => {
+    setCurrentCardNumber(1);
+    setCurrentCardRank(0);
+    setPreviousCardRank(0);
+    setGuess('');
+    setResultMessage('');
+    setIsGameOver(false);
+    setCardImage1(cardImage);
+    setCardImage2(cardImage);
+    setCardImage3(cardImage);
+    setCardImage4(cardImage);
+    setCardImage5(cardImage);
   }
 
   const incrementCurrentCardNumber = () => {
@@ -181,6 +192,8 @@ function App() {
       </div>
 
       <h2>{resultMessage}</h2>
+
+      <button type="button" className="button button-play-again" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>Play again</button>
 
       <p className="credit">Card assets are from Boardgame Pack by <a href="http://www.kenney.nl" target="_blank">Kenney</a></p>
     </div>
