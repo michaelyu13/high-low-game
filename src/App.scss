@@ -1,9 +1,10 @@
 @import-normalize;
 
+$color-black: #111;
 $color-green: #2a603b;
-$color-white: #eee;
 $color-purple: #4d3586;
 $color-red: #973748;
+$color-white: #eee;
 
 @media only screen and (min-width: 768px) {
 }
@@ -163,11 +164,18 @@ section {
     text-align: center;
     background-color: $color-red;
 
+    box-shadow: 0px 10px 10px -5px $color-black;
+
     opacity: 0;
     transition: opacity 0s;
 
+    @media only screen and (min-width: 768px) {
+      top: 11.5rem;
+      width: 520px;
+    }
+
     @media only screen and (min-width: 1024px) {
-      top: 12rem;
+      top: 14rem;
     }
 
     &.result--win {
