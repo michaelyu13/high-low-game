@@ -20,6 +20,7 @@ function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
+  const [isShowResult, setIsShowResult] = useState(false);
 
   useEffect(() => {
     if (deckOfCards.length === 0) return
@@ -107,6 +108,7 @@ function App() {
     setResultMessage('');
     setIsGameOver(false);
     setIsGameWon(false);
+    setIsShowResult(false);
   }
 
   const createDeckOfCards = () => {
@@ -136,6 +138,10 @@ function App() {
 
   const gameOver = () => {
     setIsGameOver(true);
+
+    setTimeout(() => {
+      setIsShowResult(true);
+    }, 1000);
   }
 
   return (
@@ -198,7 +204,7 @@ function App() {
           </div>
         </section>
 
-        <div className={`result ${isGameWon ? "result--win" : null} ${isGameOver ? "reveal" : null}`}>
+        <div className={`result ${isGameWon ? "result--win" : null} ${isShowResult ? "reveal" : null}`}>
           <h2>{resultMessage}</h2>
           <button type="button" className="button" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>PLAY AGAIN</button>
         </div>
