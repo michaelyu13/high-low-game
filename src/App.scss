@@ -54,10 +54,16 @@ h4 {
 }
 
 button {
-  // margin-left: 0.5rem;
-  // margin-right: 0.5rem;
-
   cursor: pointer;
+
+  padding: $spacing 2rem;
+
+  font-size: $font-size-large;
+  font-weight: bold;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 section {
@@ -101,16 +107,6 @@ section {
     gap: 2rem;
   }
 
-  .button {
-    padding: $spacing 2rem;
-
-    font-size: $font-size-large;
-
-    &:disabled {
-      cursor: not-allowed;
-    }
-  }
-
   .card-progress-wrapper {
     display: flex;
     gap: 0.5rem;
@@ -123,12 +119,36 @@ section {
     @media only screen and (min-width: 1024px) {
       gap: 3rem;
     }
+  }
 
-    .card-progress {
-      img {
-        max-width: 200px;
-        width:100%;
+  .card-wrapper {
+    perspective: 800px;
+
+    .card {
+      transition: transform 1s;
+      transform-style: preserve-3d;
+      $transform-origin: 50% 50%;
+
+      &.flipped {
+        transform: rotateY(180deg);
+        transition: transform 1s;
       }
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .card-front,
+    .card-back {
+      backface-visibility: hidden;
+    }
+
+    .card-front {
+      position: absolute;
+      top: 0rem;
+
+      transform: rotateY(180deg);
     }
   }
 

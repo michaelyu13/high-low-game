@@ -2,15 +2,15 @@ import { useState, useEffect, useRef } from 'react'
 import './App.scss'
 
 function App() {
-  const cardImage = "card-back";
+  const cardBackImage = "card-back";
 
   const [deckOfCards, setDeckOfCards] = useState([]);
-  const [currentCardImage, setCurrentCardImage] = useState(cardImage);
-  const [cardImage1, setCardImage1] = useState(cardImage);
-  const [cardImage2, setCardImage2] = useState(cardImage);
-  const [cardImage3, setCardImage3] = useState(cardImage);
-  const [cardImage4, setCardImage4] = useState(cardImage);
-  const [cardImage5, setCardImage5] = useState(cardImage);
+  const [currentCardImage, setCurrentCardImage] = useState(cardBackImage);
+  const [cardImage1, setCardImage1] = useState('');
+  const [cardImage2, setCardImage2] = useState('');
+  const [cardImage3, setCardImage3] = useState('');
+  const [cardImage4, setCardImage4] = useState('');
+  const [cardImage5, setCardImage5] = useState('');
   const [currentCardNumber, setCurrentCardNumber] = useState(0);
   const [currentCardRank, setCurrentCardRank] = useState(0);
   const [previousCardRank, setPreviousCardRank] = useState(0);
@@ -94,12 +94,12 @@ function App() {
   const handlePlayAgainClick = () => {
     createDeckOfCards();
 
-    setCurrentCardImage(cardImage);
-    setCardImage1(cardImage);
-    setCardImage2(cardImage);
-    setCardImage3(cardImage);
-    setCardImage4(cardImage);
-    setCardImage5(cardImage);
+    setCurrentCardImage(cardBackImage);
+    setCardImage1('');
+    setCardImage2('');
+    setCardImage3('');
+    setCardImage4('');
+    setCardImage5('');
     setCurrentCardNumber(1);
     setCurrentCardRank(0);
     setPreviousCardRank(0);
@@ -154,50 +154,65 @@ function App() {
         </section>
 
         <section className='buttons-wrapper'>
-          <button type="button" className={`button ${isGameStarted ? "hide" : null }`} disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>PLAY</button>
+          <button type="button" className={`${isGameStarted ? "hide" : null }`} disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>PLAY</button>
 
-          <button type="button" className={`button ${isGameStarted ? null : "hide" }`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>LOWER</button>
-          <button type="button" className={`button ${isGameStarted ? null : "hide" }`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>HIGHER</button>
+          <button type="button" className={`${isGameStarted ? null : "hide" }`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>LOWER</button>
+          <button type="button" className={`${isGameStarted ? null : "hide" }`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>HIGHER</button>
         </section>
 
         <h2 className={`${isGameStarted ? null : "invisible"}`}>{currentCardNumber}/5</h2>
 
         <section className="card-progress-wrapper">
-          <div className="card-progress card-1">
-            <div className="card">
+          <div className="card-wrapper">
+            <div className={`card ${cardImage1 ? "flipped" : null }`}>
               <div className="card-back">
+                <img src="src/img/cards/card-back.png" alt="" />
+              </div>
+              <div className="card-front">
                 <img src={`src/img/cards/${cardImage1}.png`} alt="" />
               </div>
             </div>
           </div>
 
-          <div className="card-progress card-2">
-            <div className="card">
+          <div className="card-wrapper">
+            <div className={`card ${cardImage2 ? "flipped" : null}`}>
               <div className="card-back">
+                <img src="src/img/cards/card-back.png" alt="" />
+              </div>
+              <div className="card-front">
                 <img src={`src/img/cards/${cardImage2}.png`} alt="" />
               </div>
             </div>
           </div>
 
-          <div className="card-progress card-3">
-            <div className="card">
+          <div className="card-wrapper">
+            <div className={`card ${cardImage3 ? "flipped" : null}`}>
               <div className="card-back">
+                <img src="src/img/cards/card-back.png" alt="" />
+              </div>
+              <div className="card-front">
                 <img src={`src/img/cards/${cardImage3}.png`} alt="" />
               </div>
             </div>
           </div>
 
-          <div className="card-progress card-4">
-            <div className="card">
+          <div className="card-wrapper">
+            <div className={`card ${cardImage4 ? "flipped" : null}`}>
               <div className="card-back">
+                <img src="src/img/cards/card-back.png" alt="" />
+              </div>
+              <div className="card-front">
                 <img src={`src/img/cards/${cardImage4}.png`} alt="" />
               </div>
             </div>
           </div>
 
-          <div className="card-progress card-5">
-            <div className="card">
+          <div className="card-wrapper">
+            <div className={`card ${cardImage5 ? "flipped" : null}`}>
               <div className="card-back">
+                <img src="src/img/cards/card-back.png" alt="" />
+              </div>
+              <div className="card-front">
                 <img src={`src/img/cards/${cardImage5}.png`} alt="" />
               </div>
             </div>
@@ -206,7 +221,7 @@ function App() {
 
         <div className={`result ${isGameWon ? "result--win" : null} ${isShowResult ? "reveal" : null}`}>
           <h2>{resultMessage}</h2>
-          <button type="button" className="button" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>PLAY AGAIN</button>
+          <button type="button" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>PLAY AGAIN</button>
         </div>
 
         <p className="credit">Card assets are from Boardgame Pack by <a href="http://www.kenney.nl" target="_blank">Kenney</a></p>
