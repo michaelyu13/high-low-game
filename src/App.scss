@@ -69,12 +69,25 @@ section {
   flex-direction: column;
   align-items: center;
 
-  margin: 0 auto;
   border: 6px double $color-white;
   padding: $spacing;
 
-  max-width: 1200px;
+  max-width: 1000px;
 
+  @media only screen and (min-width: 768px) {
+    margin: 0 auto;
+  }
+
+
+  @media only screen and (min-width: 1024px) {
+    margin-top: 3rem;
+  }
+
+  .game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .current-card {
     width: 180px;
 
@@ -100,10 +113,14 @@ section {
 
   .card-progress-wrapper {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     align-items: center;
 
     @media only screen and (min-width: 768px) {
+      gap: 2rem;
+    }
+
+    @media only screen and (min-width: 1024px) {
       gap: 3rem;
     }
 
@@ -127,7 +144,11 @@ section {
     background-color: $color-red;
 
     opacity: 0;
-    transition: opacity 2s;
+    transition: opacity 0s;
+
+    @media only screen and (min-width: 1024px) {
+      top: 12rem;
+    }
 
     &.result--win {
       background-color: $color-purple;
@@ -135,6 +156,7 @@ section {
 
     &.reveal {
       opacity: 1;
+      transition: opacity 1s;
     }
   }
 
