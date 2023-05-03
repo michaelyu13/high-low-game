@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.scss'
 
+const LOCAL_STORAGE_KEY = 'highLowGame.gameStats';
+
 function App() {
-  const cardBackImage = "card-back";
+  const cardBackImage = 'card-back';
 
   const [deckOfCards, setDeckOfCards] = useState([]);
   const [currentCardImage, setCurrentCardImage] = useState(cardBackImage);
@@ -17,10 +19,29 @@ function App() {
   const [guess, setGuess] = useState('');
   const [correctGuesses, setCorrectGuesses] = useState(0);
   const [resultMessage, setResultMessage] = useState('');
+  const [gameStats, setGameStats] = useState({win: 0, lose: 0, sameCard: 0});
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
   const [isShowResult, setIsShowResult] = useState(false);
+
+  const sideEffectRanOnceAfterInitialRender = useRef(false);
+
+  useEffect(() => {
+    if (sideEffectRanOnceAfterInitialRender.current === false) {
+      const gameStatsJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+      if (gameStatsJSON != null) {
+        setGameStats(JSON.parse(gameStatsJSON));
+      }
+
+      sideEffectRanOnceAfterInitialRender.current = true;
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStats));
+  }, [isGameOver])
 
   useEffect(() => {
     if (deckOfCards.length === 0) return
@@ -29,6 +50,11 @@ function App() {
 
     if (deckOfCards[randomCardFromDeck].rank === previousCardRank) {
       setResultMessage('Unlucky. You got the same card\u00A0rank.');
+
+      const updatedStats = gameStats;
+      updatedStats.sameCard += 1;
+      setGameStats(updatedStats);
+
       gameOver();
     }
 
@@ -62,9 +88,14 @@ function App() {
     if (currentCardRank === 0) return
 
     if (guess === 'lower' && currentCardRank > previousCardRank
-      || guess === 'higher' && currentCardRank < previousCardRank
+    || guess === 'higher' && currentCardRank < previousCardRank
     ) {
-      setResultMessage('Sorry, better luck next\u00A0time.');
+      setResultMessage(`Sorry, you didn't guess correctly. Why not try\u00A0again?`);
+
+      const updatedStats = gameStats;
+      updatedStats.lose += 1;
+      setGameStats(updatedStats);
+
       gameOver();
     } else {
       setCorrectGuesses(currentCardNumber - 1);
@@ -75,6 +106,11 @@ function App() {
     if (correctGuesses === 4) {
       setResultMessage('Congratulations. You got them all\u00A0correct!');
       setIsGameWon(true);
+
+      const updatedStats = gameStats;
+      updatedStats.win += 1;
+      setGameStats(updatedStats);
+
       gameOver();
     }
   }, [correctGuesses])
@@ -154,17 +190,17 @@ function App() {
         </section>
 
         <section className='buttons-wrapper'>
-          <button type="button" className={`${isGameStarted ? "hide" : null }`} disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>PLAY</button>
+          <button type="button" className={`${isGameStarted ? "hide" : null}`} disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>PLAY</button>
 
-          <button type="button" className={`${isGameStarted ? null : "hide" }`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>LOWER</button>
-          <button type="button" className={`${isGameStarted ? null : "hide" }`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>HIGHER</button>
+          <button type="button" className={`${isGameStarted ? null : "hide"}`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>LOWER</button>
+          <button type="button" className={`${isGameStarted ? null : "hide"}`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>HIGHER</button>
         </section>
 
         <h2 className={`${isGameStarted ? null : "invisible"}`}>{currentCardNumber}/5</h2>
 
         <section className="card-progress-wrapper">
           <div className="card-wrapper">
-            <div className={`card ${cardImage1 ? "flipped" : null }`}>
+            <div className={`card ${cardImage1 ? "flipped" : null}`}>
               <div className="card-back">
                 <img src="src/img/cards/card-back.png" alt="" />
               </div>
@@ -217,6 +253,11 @@ function App() {
               </div>
             </div>
           </div>
+        </section>
+
+        <section>
+          <h2>Game Stats</h2>
+          <h3>Win: {gameStats.win}</h3> <h3>Lose: {gameStats.lose}</h3> <h3>Drew Same Card: {gameStats.sameCard}</h3>
         </section>
 
         <div className={`result ${isGameWon ? "result--win" : null} ${isShowResult ? "reveal" : null}`}>
