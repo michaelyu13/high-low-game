@@ -4,10 +4,14 @@ import './App.scss'
 const LOCAL_STORAGE_KEY = 'highLowGame.gameStats';
 
 function App() {
-  const cardBackImage = 'card-back';
+  const initialCurrentCardImage = 'card-back';
+  const initialGameStats = {win: 0, lose: 0, sameCard: 0};
+
+  const tryAgainMessage = 'Do\u00A0you want to try\u00A0again?';
+  const cardBackImage = `src/img/cards/${initialCurrentCardImage}.png`;
 
   const [deckOfCards, setDeckOfCards] = useState([]);
-  const [currentCardImage, setCurrentCardImage] = useState(cardBackImage);
+  const [currentCardImage, setCurrentCardImage] = useState(initialCurrentCardImage);
   const [cardImage1, setCardImage1] = useState('');
   const [cardImage2, setCardImage2] = useState('');
   const [cardImage3, setCardImage3] = useState('');
@@ -19,7 +23,7 @@ function App() {
   const [guess, setGuess] = useState('');
   const [correctGuesses, setCorrectGuesses] = useState(0);
   const [resultMessage, setResultMessage] = useState('');
-  const [gameStats, setGameStats] = useState({win: 0, lose: 0, sameCard: 0});
+  const [gameStats, setGameStats] = useState(initialGameStats);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
@@ -40,16 +44,12 @@ function App() {
   }, [])
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStats));
-  }, [isGameOver])
-
-  useEffect(() => {
     if (deckOfCards.length === 0) return
 
     const randomCardFromDeck = Math.floor(Math.random() * deckOfCards.length);
 
     if (deckOfCards[randomCardFromDeck].rank === previousCardRank) {
-      setResultMessage('Unlucky. You got the same card\u00A0rank.');
+      setResultMessage(`'Unlucky. You got the same card rank. ${tryAgainMessage}`);
 
       const updatedStats = gameStats;
       updatedStats.sameCard += 1;
@@ -90,7 +90,7 @@ function App() {
     if (guess === 'lower' && currentCardRank > previousCardRank
     || guess === 'higher' && currentCardRank < previousCardRank
     ) {
-      setResultMessage(`Sorry, you didn't guess correctly. Why not try\u00A0again?`);
+      setResultMessage(`Sorry, you didn't guess correctly. ${tryAgainMessage}`);
 
       const updatedStats = gameStats;
       updatedStats.lose += 1;
@@ -104,7 +104,7 @@ function App() {
 
   useEffect(() => {
     if (correctGuesses === 4) {
-      setResultMessage('Congratulations. You got them all\u00A0correct!');
+      setResultMessage(`Congratulations. You got them all correct! ${tryAgainMessage}`);
       setIsGameWon(true);
 
       const updatedStats = gameStats;
@@ -127,10 +127,15 @@ function App() {
     setGuess(e.target.value);
   }
 
+  const handleResetGameStatsClick = () => {
+    localStorage.clear();
+    location.reload();
+  }
+
   const handlePlayAgainClick = () => {
     createDeckOfCards();
 
-    setCurrentCardImage(cardBackImage);
+    setCurrentCardImage(initialCurrentCardImage);
     setCardImage1('');
     setCardImage2('');
     setCardImage3('');
@@ -175,6 +180,8 @@ function App() {
   const gameOver = () => {
     setIsGameOver(true);
 
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStats));
+
     setTimeout(() => {
       setIsShowResult(true);
     }, 1000);
@@ -182,90 +189,99 @@ function App() {
 
   return (
     <div className="game-container">
-      <div className="game-wrapper">
-        <h1>High-Low Game</h1>
+      <main>
+        <h1 className="game-name">High-Low Game</h1>
 
-        <section>
-          <img className="current-card" src={`src/img/cards/${currentCardImage}.png`} alt="" />
+        <section className="game-wrapper">
+          <section>
+            <img className="current-card" src={`src/img/cards/${currentCardImage}.png`} alt="" />
+          </section>
+
+          <section>
+            <button type="button" className={`${isGameStarted ? "hide" : null}`} disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>Play</button>
+
+            <button type="button" className={`${isGameStarted ? null : "hide"}`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>Lower</button>
+            <button type="button" className={`${isGameStarted ? null : "hide"}`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>Higher</button>
+          </section>
+
+          <h2 className={`${isGameStarted ? null : "invisible"}`}>{currentCardNumber}/5</h2>
+
+          <div className="card-progress-wrapper">
+            <div className="card-wrapper">
+              <div className={`card ${cardImage1 ? "flipped" : null}`}>
+                <div className="card-back">
+                  <img src={`${cardBackImage}`} alt="" />
+                </div>
+                <div className="card-front">
+                  <img src={`src/img/cards/${cardImage1}.png`} alt="" />
+                </div>
+              </div>
+            </div>
+
+            <div className="card-wrapper">
+              <div className={`card ${cardImage2 ? "flipped" : null}`}>
+                <div className="card-back">
+                  <img src={`${cardBackImage}`} alt="" />
+                </div>
+                <div className="card-front">
+                  <img src={`src/img/cards/${cardImage2}.png`} alt="" />
+                </div>
+              </div>
+            </div>
+
+            <div className="card-wrapper">
+              <div className={`card ${cardImage3 ? "flipped" : null}`}>
+                <div className="card-back">
+                  <img src={`${cardBackImage}`} alt="" />
+                </div>
+                <div className="card-front">
+                  <img src={`src/img/cards/${cardImage3}.png`} alt="" />
+                </div>
+              </div>
+            </div>
+
+            <div className="card-wrapper">
+              <div className={`card ${cardImage4 ? "flipped" : null}`}>
+                <div className="card-back">
+                  <img src={`${cardBackImage}`} alt="" />
+                </div>
+                <div className="card-front">
+                  <img src={`src/img/cards/${cardImage4}.png`} alt="" />
+                </div>
+              </div>
+            </div>
+
+            <div className="card-wrapper">
+              <div className={`card ${cardImage5 ? "flipped" : null}`}>
+                <div className="card-back">
+                  <img src={`${cardBackImage}`} alt="" />
+                </div>
+                <div className="card-front">
+                  <img src={`src/img/cards/${cardImage5}.png`} alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
-        <section className='buttons-wrapper'>
-          <button type="button" className={`${isGameStarted ? "hide" : null}`} disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>PLAY</button>
-
-          <button type="button" className={`${isGameStarted ? null : "hide"}`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>LOWER</button>
-          <button type="button" className={`${isGameStarted ? null : "hide"}`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>HIGHER</button>
-        </section>
-
-        <h2 className={`${isGameStarted ? null : "invisible"}`}>{currentCardNumber}/5</h2>
-
-        <section className="card-progress-wrapper">
-          <div className="card-wrapper">
-            <div className={`card ${cardImage1 ? "flipped" : null}`}>
-              <div className="card-back">
-                <img src="src/img/cards/card-back.png" alt="" />
-              </div>
-              <div className="card-front">
-                <img src={`src/img/cards/${cardImage1}.png`} alt="" />
-              </div>
-            </div>
-          </div>
-
-          <div className="card-wrapper">
-            <div className={`card ${cardImage2 ? "flipped" : null}`}>
-              <div className="card-back">
-                <img src="src/img/cards/card-back.png" alt="" />
-              </div>
-              <div className="card-front">
-                <img src={`src/img/cards/${cardImage2}.png`} alt="" />
-              </div>
-            </div>
-          </div>
-
-          <div className="card-wrapper">
-            <div className={`card ${cardImage3 ? "flipped" : null}`}>
-              <div className="card-back">
-                <img src="src/img/cards/card-back.png" alt="" />
-              </div>
-              <div className="card-front">
-                <img src={`src/img/cards/${cardImage3}.png`} alt="" />
-              </div>
-            </div>
-          </div>
-
-          <div className="card-wrapper">
-            <div className={`card ${cardImage4 ? "flipped" : null}`}>
-              <div className="card-back">
-                <img src="src/img/cards/card-back.png" alt="" />
-              </div>
-              <div className="card-front">
-                <img src={`src/img/cards/${cardImage4}.png`} alt="" />
-              </div>
-            </div>
-          </div>
-
-          <div className="card-wrapper">
-            <div className={`card ${cardImage5 ? "flipped" : null}`}>
-              <div className="card-back">
-                <img src="src/img/cards/card-back.png" alt="" />
-              </div>
-              <div className="card-front">
-                <img src={`src/img/cards/${cardImage5}.png`} alt="" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section>
+        <section className="game-stats-wrapper">
           <h2>Game Stats</h2>
-          <h3>Win: {gameStats.win}</h3> <h3>Lose: {gameStats.lose}</h3> <h3>Drew Same Card: {gameStats.sameCard}</h3>
+          <div className="game-stats">
+            <h3>Win: <span className="stat">{gameStats.win}</span></h3>
+            <h3>Drew Same Card: <span className="stat">{gameStats.sameCard}</span></h3>
+            <h3>Lose: <span className="stat">{gameStats.lose}</span></h3>
+          </div>
+          <button type="button" disabled={isGameStarted && !isGameOver ? true : false} onClick={() => handleResetGameStatsClick()}>Reset game stats</button>
         </section>
+      </main>
 
-        <div className={`result ${isGameWon ? "result--win" : null} ${isShowResult ? "reveal" : null}`}>
-          <h2>{resultMessage}</h2>
-          <button type="button" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>PLAY AGAIN</button>
-        </div>
+      <footer>
+        <p>Card images used are from Boardgame Pack by <a href="http://www.kenney.nl" target="_blank">Kenney</a></p>
+      </footer>
 
-        <p className="credit">Card assets are from Boardgame Pack by <a href="http://www.kenney.nl" target="_blank">Kenney</a></p>
+      <div className={`result ${isGameWon ? "result--win" : null} ${isShowResult ? "reveal" : null}`}>
+        <h2>{resultMessage}</h2>
+        <button type="button" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>PLAY AGAIN</button>
       </div>
     </div>
   )

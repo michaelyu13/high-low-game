@@ -1,14 +1,41 @@
 @import-normalize;
 
 $color-black: #111;
+$color-blue: #71b1eb;
 $color-green: #2a603b;
-$color-purple: #4d3586;
-$color-red: #973748;
+$color-green-light: #4f602a;
+$color-grey: #aaa;
+$color-purple: #3b2a60;
+$color-red: #602a4f;
 $color-white: #eee;
 
-@media only screen and (min-width: 768px) {
+$breakpoint-medium: 768px;
+$breakpoint-large: 1024px;
+
+$spacing-half: 0.5rem;
+$spacing: 1rem;
+$spacing-medium: 2rem;
+$spacing-large: 4rem;
+
+$width-small: 520px;
+
+@mixin breakpoint($size) {
+  @if $size =='medium' {
+    @media screen and (min-width: $breakpoint-medium) {
+      @content;
+    }
+  }
+
+  @else if $size =='large' {
+    @media screen and (min-width: $breakpoint-large) {
+      @content;
+    }
+  }
 }
-@media only screen and (min-width: 1024px) {
+
+@mixin center-element {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 *,
@@ -17,18 +44,10 @@ $color-white: #eee;
   box-sizing: border-box;
 }
 
-$spacing: 1rem;
-$spacing-medium: 2rem;
-
-$font-size-large: 20px;
-/*
-  Notes:
-
-  Tablet Breakpoint = 768px
-  Desktop Breakpoint = 1024px
-*/
-
 body {
+  margin: 0;
+
+  text-align: center;
   background-color: $color-green;
   color: $color-white;
 }
@@ -55,12 +74,13 @@ h4 {
 }
 
 button {
-  cursor: pointer;
+  margin: 0 $spacing-half;
+  padding: $spacing $spacing-medium;
 
-  padding: $spacing 2rem;
-
-  font-size: $font-size-large;
+  font-size: 18px;
   font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
 
   &:disabled {
     cursor: not-allowed;
@@ -68,7 +88,18 @@ button {
 }
 
 section {
-  margin-bottom: 1rem;
+  margin-bottom: $spacing;
+}
+
+footer {
+  margin: auto 0 $spacing;
+
+  font-size: 14px;
+
+  &,
+  a {
+    color: $color-grey;
+  }
 }
 
 .game-container {
@@ -76,62 +107,61 @@ section {
   flex-direction: column;
   align-items: center;
 
-  border: 6px double $color-white;
-  padding: $spacing;
+  min-height: 100vh;
 
-  max-width: 1000px;
-
-  @media only screen and (min-width: 768px) {
-    margin: 0 auto;
+  @include breakpoint(large) {
+    padding-top: $spacing-large;
   }
 
-
-  @media only screen and (min-width: 1024px) {
-    margin-top: 3rem;
+  .game-name {
+    margin-top: $spacing;
   }
 
   .game-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-left: $spacing;
+    margin-right: $spacing;
+    border: 6px double $color-white;
+    padding: $spacing;
+
+    @include breakpoint(medium) {
+      margin-left: $spacing-medium;
+      margin-right: $spacing-medium;
+      padding: $spacing-medium;
+    }
   }
   .current-card {
     width: 180px;
 
-    @media only screen and (min-width: 768px) {
+    @include breakpoint(medium) {
       width: 220px;
     }
   }
 
-  .buttons-wrapper {
-    display: flex;
-    gap: 2rem;
-  }
-
   .card-progress-wrapper {
     display: flex;
-    gap: 0.5rem;
-    align-items: center;
+    gap: $spacing-half;
 
-    @media only screen and (min-width: 768px) {
-      gap: 2rem;
+    @include breakpoint(medium) {
+      gap: $spacing-medium;
     }
 
-    @media only screen and (min-width: 1024px) {
-      gap: 3rem;
+    @include breakpoint(large) {
+      gap: $spacing-large;
     }
   }
 
   .card-wrapper {
+    $rotate180: 180deg;
+
     perspective: 800px;
 
     .card {
-      transition: transform 1s;
       transform-style: preserve-3d;
       $transform-origin: 50% 50%;
+      transition: transform 1s;
 
       &.flipped {
-        transform: rotateY(180deg);
+        transform: rotateY($rotate180);
         transition: transform 1s;
       }
 
@@ -147,34 +177,60 @@ section {
 
     .card-front {
       position: absolute;
-      top: 0rem;
+      top: 0;
 
-      transform: rotateY(180deg);
+      transform: rotateY($rotate180);
     }
   }
 
+  .game-stats-wrapper {
+    @include center-element;
+
+    max-width: $width-small;
+
+    @include breakpoint(medium) {
+        margin-top: $spacing-large;
+      }
+  }
+
+  .game-stats {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .stat{
+    display: block;
+
+    font-size: 26px;
+    font-weight: bold;
+    color: $color-blue;
+  }
+
   .result {
+    @include center-element;
+
     position: absolute;
     top: 9rem;
+    left: 0;
+    right: 0;
 
     border: 5px solid $color-white;
-    padding: 1rem;
+    padding: $spacing;
     width: 320px;
 
     text-align: center;
     background-color: $color-red;
 
     box-shadow: 0px 10px 10px -5px $color-black;
-
     opacity: 0;
     transition: opacity 0s;
 
-    @media only screen and (min-width: 768px) {
+    @include breakpoint(medium) {
       top: 11.5rem;
-      width: 520px;
+      width: $width-small;
     }
 
-    @media only screen and (min-width: 1024px) {
+    @include breakpoint(large) {
       top: 14rem;
     }
 
@@ -185,15 +241,6 @@ section {
     &.reveal {
       opacity: 1;
       transition: opacity 1s;
-    }
-  }
-
-  .credit {
-    position: absolute;
-    bottom: 1rem;
-
-    a {
-      color: $color-white;
     }
   }
 }
