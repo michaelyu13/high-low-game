@@ -49,7 +49,7 @@ function App() {
     const randomCardFromDeck = Math.floor(Math.random() * deckOfCards.length);
 
     if (deckOfCards[randomCardFromDeck].rank === previousCardRank) {
-      setResultMessage(`'Unlucky. You got the same card rank. ${tryAgainMessage}`);
+      setResultMessage(`Unlucky. You got the same card rank. ${tryAgainMessage}`);
 
       const updatedStats = gameStats;
       updatedStats.sameCard += 1;
@@ -90,7 +90,7 @@ function App() {
     if (guess === 'lower' && currentCardRank > previousCardRank
     || guess === 'higher' && currentCardRank < previousCardRank
     ) {
-      setResultMessage(`Sorry, you didn't guess correctly. ${tryAgainMessage}`);
+      setResultMessage(`Sorry, you did not guess correctly. ${tryAgainMessage}`);
 
       const updatedStats = gameStats;
       updatedStats.lose += 1;
