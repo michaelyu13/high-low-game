@@ -238,6 +238,10 @@ footer {
       background-color: $color-purple;
     }
 
+    &.result--samecard {
+      background-color: $color-green-light;
+    }
+
     &.reveal {
       opacity: 1;
       transition: opacity 1s;

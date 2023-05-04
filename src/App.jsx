@@ -7,9 +7,6 @@ function App() {
   const initialCurrentCardImage = 'card-back';
   const initialGameStats = {win: 0, lose: 0, sameCard: 0};
 
-  const tryAgainMessage = 'Do\u00A0you want to try\u00A0again?';
-  const cardBackImage = `src/img/cards/${initialCurrentCardImage}.png`;
-
   const [deckOfCards, setDeckOfCards] = useState([]);
   const [currentCardImage, setCurrentCardImage] = useState(initialCurrentCardImage);
   const [cardImage1, setCardImage1] = useState('');
@@ -22,14 +19,17 @@ function App() {
   const [previousCardRank, setPreviousCardRank] = useState(0);
   const [guess, setGuess] = useState('');
   const [correctGuesses, setCorrectGuesses] = useState(0);
+  const [result, setResult] = useState('');
   const [resultMessage, setResultMessage] = useState('');
   const [gameStats, setGameStats] = useState(initialGameStats);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [isGameWon, setIsGameWon] = useState(false);
   const [isShowResult, setIsShowResult] = useState(false);
 
   const sideEffectRanOnceAfterInitialRender = useRef(false);
+
+  const tryAgainMessage = 'Do\u00A0you want to try\u00A0again?';
+  const cardBackImage = `src/img/cards/${initialCurrentCardImage}.png`;
 
   useEffect(() => {
     if (sideEffectRanOnceAfterInitialRender.current === false) {
@@ -49,38 +49,33 @@ function App() {
     const randomCardFromDeck = Math.floor(Math.random() * deckOfCards.length);
 
     if (deckOfCards[randomCardFromDeck].rank === previousCardRank) {
-      setResultMessage(`Unlucky. You got the same card rank. ${tryAgainMessage}`);
-
-      const updatedStats = gameStats;
-      updatedStats.sameCard += 1;
-      setGameStats(updatedStats);
-
-      gameOver();
+      updateResult('sameCard');
     }
 
     setDeckOfCards(deckOfCards.filter(card => card.id !== deckOfCards[randomCardFromDeck].id))
 
     const selectedCard = deckOfCards[randomCardFromDeck];
+    const selectedCardImage = `${selectedCard.suit}-${selectedCard.rank}`;
 
     switch (currentCardNumber) {
       case 1:
-        setCardImage1(`${selectedCard.suit}-${selectedCard.rank}`);
+        setCardImage1(selectedCardImage);
         break;
       case 2:
-        setCardImage2(`${selectedCard.suit}-${selectedCard.rank}`);
+        setCardImage2(selectedCardImage);
         break;
       case 3:
-        setCardImage3(`${selectedCard.suit}-${selectedCard.rank}`);
+        setCardImage3(selectedCardImage);
         break;
       case 4:
-        setCardImage4(`${selectedCard.suit}-${selectedCard.rank}`);
+        setCardImage4(selectedCardImage);
         break;
       case 5:
-        setCardImage5(`${selectedCard.suit}-${selectedCard.rank}`);
+        setCardImage5(selectedCardImage);
         break;
     }
 
-    setCurrentCardImage(`${selectedCard.suit}-${selectedCard.rank}`);
+    setCurrentCardImage(selectedCardImage);
     setCurrentCardRank(selectedCard.rank);
   }, [currentCardNumber])
 
@@ -90,28 +85,17 @@ function App() {
     if (guess === 'lower' && currentCardRank > previousCardRank
     || guess === 'higher' && currentCardRank < previousCardRank
     ) {
-      setResultMessage(`Sorry, you did not guess correctly. ${tryAgainMessage}`);
-
-      const updatedStats = gameStats;
-      updatedStats.lose += 1;
-      setGameStats(updatedStats);
-
-      gameOver();
+      updateResult('lose');
     } else {
-      setCorrectGuesses(currentCardNumber - 1);
+      if (currentCardNumber === 1) return
+
+      setCorrectGuesses(correctGuesses + 1);
     }
   }, [currentCardRank])
 
   useEffect(() => {
     if (correctGuesses === 4) {
-      setResultMessage(`Congratulations. You got them all correct! ${tryAgainMessage}`);
-      setIsGameWon(true);
-
-      const updatedStats = gameStats;
-      updatedStats.win += 1;
-      setGameStats(updatedStats);
-
-      gameOver();
+      updateResult('win');
     }
   }, [correctGuesses])
 
@@ -146,9 +130,9 @@ function App() {
     setPreviousCardRank(0);
     setGuess('');
     setCorrectGuesses(0);
+    setResult('');
     setResultMessage('');
     setIsGameOver(false);
-    setIsGameWon(false);
     setIsShowResult(false);
   }
 
@@ -177,9 +161,25 @@ function App() {
     setCurrentCardNumber(currentCardNumber + 1);
   }
 
-  const gameOver = () => {
+  const updateResult = (result) => {
     setIsGameOver(true);
 
+    switch (result) {
+      case 'win':
+        setResultMessage(`Congratulations. You got them all correct! ${tryAgainMessage}`);
+        break;
+      case 'sameCard':
+        setResultMessage(`Unlucky. You got the same card rank. ${tryAgainMessage}`);
+        break;
+      default:
+        setResultMessage(`Sorry, you did not guess correctly. ${tryAgainMessage}`);
+    }
+
+    const updatedStats = gameStats;
+    updatedStats[result] += 1;
+    setResult(result);
+
+    setGameStats(updatedStats);
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStats));
 
     setTimeout(() => {
@@ -279,7 +279,7 @@ function App() {
         <p>Card images used are from Boardgame Pack by <a href="http://www.kenney.nl" target="_blank">Kenney</a></p>
       </footer>
 
-      <div className={`result ${isGameWon ? "result--win" : null} ${isShowResult ? "reveal" : null}`}>
+      <div className={`result result--${isGameOver ? result.toLowerCase() : null} ${isShowResult ? "reveal" : null}`}>
         <h2>{resultMessage}</h2>
         <button type="button" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>PLAY AGAIN</button>
       </div>
