@@ -25,7 +25,8 @@ function App() {
   const sideEffectRanOnceAfterInitialRender = useRef(false);
 
   const tryAgainMessage = 'Do\u00A0you want to try\u00A0again?';
-  const cardBackImage = `src/img/cards/${initialCurrentCardImage}.png`;
+  const cardImagePath = 'src/img/cards/';
+  const cardBackImage = `${cardImagePath}${initialCurrentCardImage}.png`;
 
   useEffect(() => {
     if (sideEffectRanOnceAfterInitialRender.current === false) {
@@ -172,7 +173,7 @@ function App() {
 
         <section className="game-wrapper">
           <section>
-            <img className="current-card" src={`src/img/cards/${currentCardImage}.png`} alt="" />
+            <img className="current-card" src={`${cardImagePath}${currentCardImage}.png`} alt="" />
           </section>
 
           <section>
@@ -191,51 +192,47 @@ function App() {
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
                 <div className="card-front">
-                  <img src={`src/img/cards/${cardImages[0]}.png`} alt="" />
+                  <img src={`${cardImagePath}${cardImages[0] ? cardImages[0] : initialCurrentCardImage}.png`} alt="" />
                 </div>
               </div>
             </div>
-
             <div className="card-wrapper">
               <div className={`card ${cardImages[1] ? "flipped" : null}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
                 <div className="card-front">
-                  <img src={`src/img/cards/${cardImages[1]}.png`} alt="" />
+                  <img src={`${cardImagePath}${cardImages[1] ? cardImages[1] : initialCurrentCardImage}.png`} alt="" />
                 </div>
               </div>
             </div>
-
             <div className="card-wrapper">
               <div className={`card ${cardImages[2] ? "flipped" : null}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
                 <div className="card-front">
-                  <img src={`src/img/cards/${cardImages[2]}.png`} alt="" />
+                  <img src={`${cardImagePath}${cardImages[2] ? cardImages[2] : initialCurrentCardImage}.png`} alt="" />
                 </div>
               </div>
             </div>
-
             <div className="card-wrapper">
               <div className={`card ${cardImages[3] ? "flipped" : null}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
                 <div className="card-front">
-                  <img src={`src/img/cards/${cardImages[3]}.png`} alt="" />
+                  <img src={`${cardImagePath}${cardImages[3] ? cardImages[3] : initialCurrentCardImage}.png`} alt="" />
                 </div>
               </div>
             </div>
-
             <div className="card-wrapper">
               <div className={`card ${cardImages[4] ? "flipped" : null}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
                 <div className="card-front">
-                  <img src={`src/img/cards/${cardImages[4]}.png`} alt="" />
+                  <img src={`${cardImagePath}${cardImages[4] ? cardImages[4] : initialCurrentCardImage}.png`} alt="" />
                 </div>
               </div>
             </div>
