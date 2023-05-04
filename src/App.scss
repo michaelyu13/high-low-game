@@ -138,15 +138,16 @@ footer {
   }
 
   .card-progress-wrapper {
-    display: flex;
-    gap: $spacing-half;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    column-gap: $spacing-half;
 
     @include breakpoint(medium) {
-      gap: $spacing-medium;
+      column-gap: $spacing-medium;
     }
 
     @include breakpoint(large) {
-      gap: $spacing-large;
+      column-gap: $spacing-large;
     }
   }
 
