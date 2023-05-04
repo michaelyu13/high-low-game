@@ -9,11 +9,7 @@ function App() {
 
   const [deckOfCards, setDeckOfCards] = useState([]);
   const [currentCardImage, setCurrentCardImage] = useState(initialCurrentCardImage);
-  const [cardImage1, setCardImage1] = useState('');
-  const [cardImage2, setCardImage2] = useState('');
-  const [cardImage3, setCardImage3] = useState('');
-  const [cardImage4, setCardImage4] = useState('');
-  const [cardImage5, setCardImage5] = useState('');
+  const [cardImages, setCardImages] = useState([]);
   const [currentCardNumber, setCurrentCardNumber] = useState(0);
   const [currentCardRank, setCurrentCardRank] = useState(0);
   const [previousCardRank, setPreviousCardRank] = useState(0);
@@ -57,23 +53,9 @@ function App() {
     const selectedCard = deckOfCards[randomCardFromDeck];
     const selectedCardImage = `${selectedCard.suit}-${selectedCard.rank}`;
 
-    switch (currentCardNumber) {
-      case 1:
-        setCardImage1(selectedCardImage);
-        break;
-      case 2:
-        setCardImage2(selectedCardImage);
-        break;
-      case 3:
-        setCardImage3(selectedCardImage);
-        break;
-      case 4:
-        setCardImage4(selectedCardImage);
-        break;
-      case 5:
-        setCardImage5(selectedCardImage);
-        break;
-    }
+    const updatedCardImages = cardImages;
+    updatedCardImages.push(selectedCardImage)
+    setCardImages(updatedCardImages);
 
     setCurrentCardImage(selectedCardImage);
     setCurrentCardRank(selectedCard.rank);
@@ -120,11 +102,7 @@ function App() {
     createDeckOfCards();
 
     setCurrentCardImage(initialCurrentCardImage);
-    setCardImage1('');
-    setCardImage2('');
-    setCardImage3('');
-    setCardImage4('');
-    setCardImage5('');
+    setCardImages([]);
     setCurrentCardNumber(1);
     setCurrentCardRank(0);
     setPreviousCardRank(0);
@@ -208,56 +186,56 @@ function App() {
 
           <div className="card-progress-wrapper">
             <div className="card-wrapper">
-              <div className={`card ${cardImage1 ? "flipped" : null}`}>
+              <div className={`card ${cardImages[0] ? "flipped" : null}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
                 <div className="card-front">
-                  <img src={`src/img/cards/${cardImage1}.png`} alt="" />
+                  <img src={`src/img/cards/${cardImages[0]}.png`} alt="" />
                 </div>
               </div>
             </div>
 
             <div className="card-wrapper">
-              <div className={`card ${cardImage2 ? "flipped" : null}`}>
+              <div className={`card ${cardImages[1] ? "flipped" : null}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
                 <div className="card-front">
-                  <img src={`src/img/cards/${cardImage2}.png`} alt="" />
+                  <img src={`src/img/cards/${cardImages[1]}.png`} alt="" />
                 </div>
               </div>
             </div>
 
             <div className="card-wrapper">
-              <div className={`card ${cardImage3 ? "flipped" : null}`}>
+              <div className={`card ${cardImages[2] ? "flipped" : null}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
                 <div className="card-front">
-                  <img src={`src/img/cards/${cardImage3}.png`} alt="" />
+                  <img src={`src/img/cards/${cardImages[2]}.png`} alt="" />
                 </div>
               </div>
             </div>
 
             <div className="card-wrapper">
-              <div className={`card ${cardImage4 ? "flipped" : null}`}>
+              <div className={`card ${cardImages[3] ? "flipped" : null}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
                 <div className="card-front">
-                  <img src={`src/img/cards/${cardImage4}.png`} alt="" />
+                  <img src={`src/img/cards/${cardImages[3]}.png`} alt="" />
                 </div>
               </div>
             </div>
 
             <div className="card-wrapper">
-              <div className={`card ${cardImage5 ? "flipped" : null}`}>
+              <div className={`card ${cardImages[4] ? "flipped" : null}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
                 <div className="card-front">
-                  <img src={`src/img/cards/${cardImage5}.png`} alt="" />
+                  <img src={`src/img/cards/${cardImages[4]}.png`} alt="" />
                 </div>
               </div>
             </div>
