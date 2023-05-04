@@ -136,7 +136,7 @@ footer {
     }
   }
 
-  .card-progress-wrapper {
+  .cards-to-guess-wrapper {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     column-gap: $spacing-half;

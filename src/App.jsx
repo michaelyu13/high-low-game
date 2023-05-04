@@ -177,17 +177,17 @@ function App() {
           </section>
 
           <section>
-            <button type="button" className={`${isGameStarted ? "hide" : null}`} disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>Play</button>
+            <button type="button" className={`${isGameStarted ? "hide" : ''}`} value="play" disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>Play</button>
 
-            <button type="button" className={`${isGameStarted ? null : "hide"}`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>Lower</button>
-            <button type="button" className={`${isGameStarted ? null : "hide"}`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>Higher</button>
+            <button type="button" className={`${isGameStarted ? '' : "hide"}`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>Lower</button>
+            <button type="button" className={`${isGameStarted ? '' : "hide"}`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>Higher</button>
           </section>
 
-          <h2 className={`${isGameStarted ? null : "invisible"}`}>{currentCardNumber}/5</h2>
+          <h2 className={`${isGameStarted ? '' : "invisible"}`} data-testid="currentCardNumber">{`${currentCardNumber}/5`}</h2>
 
-          <div className="card-progress-wrapper">
+          <div className="cards-to-guess-wrapper">
             <div className="card-wrapper">
-              <div className={`card ${cardImages[0] ? "flipped" : null}`}>
+              <div className={`card ${cardImages[0] ? "flipped" : ''}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
@@ -197,7 +197,7 @@ function App() {
               </div>
             </div>
             <div className="card-wrapper">
-              <div className={`card ${cardImages[1] ? "flipped" : null}`}>
+              <div className={`card ${cardImages[1] ? "flipped" : ''}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
@@ -207,7 +207,7 @@ function App() {
               </div>
             </div>
             <div className="card-wrapper">
-              <div className={`card ${cardImages[2] ? "flipped" : null}`}>
+              <div className={`card ${cardImages[2] ? "flipped" : ''}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
@@ -217,7 +217,7 @@ function App() {
               </div>
             </div>
             <div className="card-wrapper">
-              <div className={`card ${cardImages[3] ? "flipped" : null}`}>
+              <div className={`card ${cardImages[3] ? "flipped" : ''}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
@@ -227,7 +227,7 @@ function App() {
               </div>
             </div>
             <div className="card-wrapper">
-              <div className={`card ${cardImages[4] ? "flipped" : null}`}>
+              <div className={`card ${cardImages[4] ? "flipped" : ''}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
@@ -254,9 +254,9 @@ function App() {
         <p>Card images used are from Boardgame Pack by <a href="http://www.kenney.nl" target="_blank">Kenney</a></p>
       </footer>
 
-      <div className={`result result--${isGameOver ? result.toLowerCase() : null} ${isShowResult ? "reveal" : null}`}>
+      <div className={`result ${isGameOver ? `result--${result.toLowerCase()}` : ''} ${isShowResult ? "reveal" : ''}`} data-testid="result">
         <h2>{resultMessage}</h2>
-        <button type="button" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>PLAY AGAIN</button>
+        <button type="button" value="playAgain" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>Play again</button>
       </div>
     </div>
   )
