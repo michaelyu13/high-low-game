@@ -177,17 +177,17 @@ function App() {
           </section>
 
           <section>
-            <button type="button" className={`${isGameStarted ? "hide" : ''}`} value="play" disabled={currentCardNumber !== 0 ? true : false} onClick={() => handlePlayClick()}>Play</button>
+            <button type="button" className={`${isGameStarted && "hide"}`} value="play" disabled={currentCardNumber !== 0} onClick={() => handlePlayClick()}>Play</button>
 
-            <button type="button" className={`${isGameStarted ? '' : "hide"}`} value="lower" disabled={isGameOver || currentCardRank === 1 ? true : false} onClick={(e) => handleGuessClick(e)}>Lower</button>
-            <button type="button" className={`${isGameStarted ? '' : "hide"}`} value="higher" disabled={isGameOver || currentCardRank === 13 ? true : false} onClick={(e) => handleGuessClick(e)}>Higher</button>
+            <button type="button" className={`${!isGameStarted && "hide"}`} value="lower" disabled={isGameOver || currentCardRank === 1} onClick={(e) => handleGuessClick(e)}>Lower</button>
+            <button type="button" className={`${!isGameStarted && "hide"}`} value="higher" disabled={isGameOver || currentCardRank === 13} onClick={(e) => handleGuessClick(e)}>Higher</button>
           </section>
 
-          <h2 className={`${isGameStarted ? '' : "invisible"}`} data-testid="currentCardNumber">{`${currentCardNumber}/5`}</h2>
+          <h2 className={`${!isGameStarted && "invisible"}`} data-testid="currentCardNumber">{`${currentCardNumber}/5`}</h2>
 
           <div className="cards-to-guess-wrapper">
             <div className="card-wrapper">
-              <div className={`card ${cardImages[0] ? "flipped" : ''}`}>
+              <div className={`card ${cardImages[0] && "flipped"}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
@@ -197,7 +197,7 @@ function App() {
               </div>
             </div>
             <div className="card-wrapper">
-              <div className={`card ${cardImages[1] ? "flipped" : ''}`}>
+              <div className={`card ${cardImages[1] && "flipped"}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
@@ -207,7 +207,7 @@ function App() {
               </div>
             </div>
             <div className="card-wrapper">
-              <div className={`card ${cardImages[2] ? "flipped" : ''}`}>
+              <div className={`card ${cardImages[2] && "flipped"}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
@@ -217,7 +217,7 @@ function App() {
               </div>
             </div>
             <div className="card-wrapper">
-              <div className={`card ${cardImages[3] ? "flipped" : ''}`}>
+              <div className={`card ${cardImages[3] && "flipped"}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
@@ -227,7 +227,7 @@ function App() {
               </div>
             </div>
             <div className="card-wrapper">
-              <div className={`card ${cardImages[4] ? "flipped" : ''}`}>
+              <div className={`card ${cardImages[4] && "flipped"}`}>
                 <div className="card-back">
                   <img src={`${cardBackImage}`} alt="" />
                 </div>
@@ -246,7 +246,7 @@ function App() {
             <h3>Drew Same Card: <span className="stat">{gameStats.sameCard}</span></h3>
             <h3>Lose: <span className="stat">{gameStats.lose}</span></h3>
           </div>
-          <button type="button" disabled={isGameStarted && !isGameOver ? true : false} onClick={() => handleResetGameStatsClick()}>Reset game stats</button>
+          <button type="button" disabled={isGameStarted && !isGameOver} onClick={() => handleResetGameStatsClick()}>Reset game stats</button>
         </section>
       </main>
 
@@ -254,9 +254,9 @@ function App() {
         <p>Card images used are from Boardgame Pack by <a href="http://www.kenney.nl" target="_blank">Kenney</a></p>
       </footer>
 
-      <div className={`result ${isGameOver ? `result--${result.toLowerCase()}` : ''} ${isShowResult ? "reveal" : ''}`} data-testid="result">
+      <div className={`result ${isGameOver && result && `result--${result.toLowerCase()}`} ${isShowResult && "reveal"}`} data-testid="result">
         <h2>{resultMessage}</h2>
-        <button type="button" value="playAgain" disabled={isGameOver ? false : true} onClick={() => handlePlayAgainClick()}>Play again</button>
+        <button type="button" value="playAgain" disabled={!isGameOver} onClick={() => handlePlayAgainClick()}>Play again</button>
       </div>
     </div>
   )
