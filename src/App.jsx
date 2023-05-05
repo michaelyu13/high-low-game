@@ -145,13 +145,13 @@ function App() {
 
     switch (result) {
       case 'win':
-        setResultMessage(`Congratulations. You got them all correct! ${tryAgainMessage}`);
+        setResultMessage(`Congratulations. You got them all\u00A0correct!\n${tryAgainMessage}`);
         break;
       case 'sameCard':
-        setResultMessage(`Unlucky. You got the same card rank. ${tryAgainMessage}`);
+        setResultMessage(`Unlucky. You got the same card\u00A0rank.\n${tryAgainMessage}`);
         break;
       default:
-        setResultMessage(`Sorry, you did not guess correctly. ${tryAgainMessage}`);
+        setResultMessage(`Sorry, you did not guess\u00A0correctly.\n${tryAgainMessage}`);
     }
 
     const updatedStats = gameStats;
@@ -255,7 +255,7 @@ function App() {
       </footer>
 
       <div className={`result ${isGameOver && result && `result--${result.toLowerCase()}`} ${isShowResult && "reveal"}`} data-testid="result">
-        <h2>{resultMessage}</h2>
+        <h2 className="result-message">{resultMessage}</h2>
         <button type="button" value="playAgain" disabled={!isGameOver} onClick={() => handlePlayAgainClick()}>Play again</button>
       </div>
     </div>

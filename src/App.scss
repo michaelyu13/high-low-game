@@ -245,5 +245,9 @@ footer {
       opacity: 1;
       transition: opacity 1s;
     }
+
+    .result-message {
+      white-space: pre-wrap;
+    }
   }
 }
