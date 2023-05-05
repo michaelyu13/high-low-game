@@ -1,4 +1,4 @@
-import { render, fireEvent, screen, getByText } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 
 import App from './App';
 
@@ -19,11 +19,23 @@ describe('App', () => {
     expect(resetGameStatsButtonEl).not.toBeDisabled();
   });
 
+  test('Current card is shown', () => {
+    render(<App />);
+    const currentCard = screen.getByTestId('currentCard')
+    expect(currentCard).toBeInTheDocument();
+  });
+
   test('5 cards to guess are shown', () => {
     const {container} = render(<App />);
     const cardsToGuess = container.getElementsByClassName('card-wrapper');
 
     expect(cardsToGuess).toHaveLength(5);
+  });
+
+  test('Game Stats section is shown', () => {
+    render(<App />);
+    const gameStats = screen.getByTestId('gameStats')
+    expect(gameStats).toBeInTheDocument();
   });
 
   test('Lower and Higher button are not displayed', () => {
@@ -52,6 +64,7 @@ describe('App', () => {
     const currentCardNumberEl = screen.getByTestId('currentCardNumber')
     const resetGameStatsButtonEl = screen.getByRole('button', { name: /^reset game stats$/i });
 
+    expect(playButtonEl).toBeDisabled;
     expect(playButtonEl).toHaveClass('hide');
     expect(lowerButtonEl).toBeInTheDocument();
     expect(higherButtonEl).toBeInTheDocument();

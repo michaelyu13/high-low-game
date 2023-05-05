@@ -174,7 +174,7 @@ function App() {
 
         <section className="game-wrapper">
           <section>
-            <img className="current-card" src={`${cardImagePath + currentCardImage}.png`} alt="" />
+            <img className="current-card" src={`${cardImagePath + currentCardImage}.png`} alt="" data-testid="currentCard" />
           </section>
 
           <section>
@@ -240,7 +240,7 @@ function App() {
           </div>
         </section>
 
-        <section className="game-stats-wrapper">
+        <section className="game-stats-wrapper" data-testid="gameStats">
           <h2>Game Stats</h2>
           <div className="game-stats">
             <h3>Win: <span className="stat">{gameStats.win}</span></h3>
