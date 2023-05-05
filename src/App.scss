@@ -20,234 +20,232 @@ $spacing-large: 4rem;
 $width-small: 520px;
 
 @mixin breakpoint($size) {
-  @if $size =='medium' {
-    @media screen and (min-width: $breakpoint-medium) {
-      @content;
+    @if $size == 'medium' {
+        @media screen and (min-width: $breakpoint-medium) {
+            @content;
+        }
+    } @else if $size == 'large' {
+        @media screen and (min-width: $breakpoint-large) {
+            @content;
+        }
     }
-  }
-
-  @else if $size =='large' {
-    @media screen and (min-width: $breakpoint-large) {
-      @content;
-    }
-  }
 }
 
 @mixin center-element {
-  margin-left: auto;
-  margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
+    margin: 0;
 
-  text-align: center;
-  background-color: $color-green;
-  color: $color-white;
+    text-align: center;
+    background-color: $color-green;
+    color: $color-white;
 }
 
 .hide {
-  display: none;
+    display: none;
 }
 
 .invisible {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 .show {
-  display: block;
+    display: block;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 button {
-  margin: 0 $spacing-half;
-  padding: $spacing $spacing-medium;
+    margin: 0 $spacing-half;
+    padding: $spacing $spacing-medium;
 
-  font-size: 18px;
-  font-weight: bold;
-  text-transform: uppercase;
-  cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
 
-  &:disabled {
-    cursor: not-allowed;
-  }
+    &:disabled {
+        cursor: not-allowed;
+    }
 }
 
 section {
-  margin-bottom: $spacing;
+    margin-bottom: $spacing;
 }
 
 footer {
-  margin: auto 0 $spacing;
+    margin: auto 0 $spacing;
 
-  font-size: 14px;
+    font-size: 14px;
 
-  &,
-  a {
-    color: $color-grey;
-  }
+    &,
+    a {
+        color: $color-grey;
+    }
 }
 
 .game-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  min-height: 100vh;
-
-  @include breakpoint(large) {
-    padding-top: $spacing-large;
-  }
-
-  .game-name {
-    margin-top: $spacing;
-  }
-
-  .game-wrapper {
-    margin-left: $spacing;
-    margin-right: $spacing;
-    border: 6px double $color-white;
-    padding: $spacing;
-
-    @include breakpoint(medium) {
-      margin-left: $spacing-medium;
-      margin-right: $spacing-medium;
-      padding: $spacing-medium;
-    }
-  }
-
-  .current-card {
-    width: 180px;
-
-    @include breakpoint(medium) {
-      width: 220px;
-    }
-  }
-
-  .cards-to-guess-wrapper {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    column-gap: $spacing-half;
-
-    @include breakpoint(medium) {
-      column-gap: $spacing-medium;
-    }
+    min-height: 100vh;
 
     @include breakpoint(large) {
-      column-gap: $spacing-large;
+        padding-top: $spacing-large;
     }
 
-    .card-wrapper {
-      $rotate180: 180deg;
+    .game-name {
+        margin-top: $spacing;
+    }
 
-      perspective: 800px;
+    .game-wrapper {
+        margin-left: $spacing;
+        margin-right: $spacing;
+        border: 6px double $color-white;
+        padding: $spacing;
 
-      .card {
-        transform-style: preserve-3d;
-        $transform-origin: 50% 50%;
-        transition: transform 1s;
+        @include breakpoint(medium) {
+            margin-left: $spacing-medium;
+            margin-right: $spacing-medium;
+            padding: $spacing-medium;
+        }
+    }
 
-        &.flipped {
-          transform: rotateY($rotate180);
-          transition: transform 1s;
+    .current-card {
+        width: 180px;
+
+        @include breakpoint(medium) {
+            width: 220px;
+        }
+    }
+
+    .cards-to-guess-wrapper {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        column-gap: $spacing-half;
+
+        @include breakpoint(medium) {
+            column-gap: $spacing-medium;
         }
 
-        img {
-          width: 100%;
+        @include breakpoint(large) {
+            column-gap: $spacing-large;
         }
-      }
 
-      .card-front,
-      .card-back {
-        backface-visibility: hidden;
-      }
+        .card-wrapper {
+            $rotate180: 180deg;
 
-      .card-front {
+            perspective: 800px;
+
+            .card {
+                transform-style: preserve-3d;
+                $transform-origin: 50% 50%;
+                transition: transform 1s;
+
+                &.flipped {
+                    transform: rotateY($rotate180);
+                    transition: transform 1s;
+                }
+
+                img {
+                    width: 100%;
+                }
+            }
+
+            .card-front,
+            .card-back {
+                backface-visibility: hidden;
+            }
+
+            .card-front {
+                position: absolute;
+                top: 0;
+
+                transform: rotateY($rotate180);
+            }
+        }
+    }
+
+    .game-stats-wrapper {
+        @include center-element;
+
+        max-width: $width-small;
+
+        @include breakpoint(medium) {
+            margin-top: $spacing-large;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .stat {
+            display: block;
+
+            font-size: 26px;
+            font-weight: bold;
+            color: $color-blue;
+        }
+    }
+
+    .result {
+        @include center-element;
+
         position: absolute;
-        top: 0;
+        top: 9rem;
+        left: 0;
+        right: 0;
 
-        transform: rotateY($rotate180);
-      }
+        border: 5px solid $color-white;
+        padding: $spacing;
+        width: 320px;
+
+        background-color: $color-red;
+
+        box-shadow: 0px 10px 10px -5px $color-black;
+        opacity: 0;
+        transition: opacity 0s;
+
+        @include breakpoint(medium) {
+            top: 11.5rem;
+            width: $width-small;
+        }
+
+        @include breakpoint(large) {
+            top: 14rem;
+        }
+
+        &.result--win {
+            background-color: $color-purple;
+        }
+
+        &.result--samecard {
+            background-color: $color-green-light;
+        }
+
+        &.reveal {
+            opacity: 1;
+            transition: opacity 1s;
+        }
+
+        .result-message {
+            white-space: pre-wrap;
+        }
     }
-  }
-
-  .game-stats-wrapper {
-    @include center-element;
-
-    max-width: $width-small;
-
-    @include breakpoint(medium) {
-      margin-top: $spacing-large;
-    }
-
-    .game-stats {
-      display: flex;
-      justify-content: space-around;
-    }
-
-    .stat {
-      display: block;
-
-      font-size: 26px;
-      font-weight: bold;
-      color: $color-blue;
-    }
-  }
-
-  .result {
-    @include center-element;
-
-    position: absolute;
-    top: 9rem;
-    left: 0;
-    right: 0;
-
-    border: 5px solid $color-white;
-    padding: $spacing;
-    width: 320px;
-
-    background-color: $color-red;
-
-    box-shadow: 0px 10px 10px -5px $color-black;
-    opacity: 0;
-    transition: opacity 0s;
-
-    @include breakpoint(medium) {
-      top: 11.5rem;
-      width: $width-small;
-    }
-
-    @include breakpoint(large) {
-      top: 14rem;
-    }
-
-    &.result--win {
-      background-color: $color-purple;
-    }
-
-    &.result--samecard {
-      background-color: $color-green-light;
-    }
-
-    &.reveal {
-      opacity: 1;
-      transition: opacity 1s;
-    }
-
-    .result-message {
-      white-space: pre-wrap;
-    }
-  }
 }
