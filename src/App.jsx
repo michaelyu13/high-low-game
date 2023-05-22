@@ -73,7 +73,7 @@ function App() {
         } else {
             if (currentCardNumber === 1) return;
 
-            setCorrectGuesses(correctGuesses + 1);
+            setCorrectGuesses((prevCorrectGuesses) => prevCorrectGuesses + 1);
         }
     }, [currentCardRank]);
 
@@ -137,7 +137,7 @@ function App() {
     };
 
     const incrementCurrentCardNumber = () => {
-        setCurrentCardNumber(currentCardNumber + 1);
+        setCurrentCardNumber((prevCurrentCardNumber) => prevCurrentCardNumber + 1);
     };
 
     const updateResult = (result) => {
