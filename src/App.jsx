@@ -123,15 +123,15 @@ function App() {
 
         let playingCards = [];
 
-        for (let i = 0; i < cardSuits.length; i++) {
-            for (let j = 0; j < cardRanks.length; j++) {
+        cardSuits.forEach((cardSuit) => {
+            cardRanks.forEach((cardRank) => {
                 playingCards.push({
                     id: crypto.randomUUID(),
-                    suit: cardSuits[i],
-                    rank: cardRanks[j],
+                    suit: cardSuit,
+                    rank: cardRank,
                 });
-            }
-        }
+            });
+        });
 
         setDeckOfCards(playingCards);
     };
