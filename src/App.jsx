@@ -305,7 +305,7 @@ function App() {
             </footer>
 
             <div
-                className={`result absolute left-0 right-0 top-48 z-[-1] mx-auto w-80 space-y-8 border-4 border-solid border-white bg-rose-900 p-8 opacity-0 shadow-[0_10px_10px_-5px_rgb(0,0,0)] transition-opacity duration-0 md:top-56 md:w-[520px]
+                className={`result absolute left-0 right-0 top-48 z-[-1] mx-auto w-80 space-y-8 border-4 border-solid border-white bg-rose-900 px-4 py-8 opacity-0 shadow-[0_10px_10px_-5px_rgb(0,0,0)] transition-opacity duration-0 md:top-56 md:w-[520px]
                     ${isGameOver && result && `result--${result.toLowerCase()}`}
                     ${isShowResult && 'reveal'}`}
                 data-testid="result"
