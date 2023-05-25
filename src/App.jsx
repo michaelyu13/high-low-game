@@ -298,7 +298,7 @@ function App() {
             <footer className="mb-8 mt-4 text-sm text-gray-400">
                 <p>
                     Card images used are from Boardgame Pack by{' '}
-                    <a href="http://www.kenney.nl" target="_blank">
+                    <a className="hover:text-blue-400 hover:underline" href="http://www.kenney.nl" target="_blank">
                         Kenney
                     </a>
                 </p>
