@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+    @apply m-2 rounded bg-slate-200 px-8 py-4 font-bold uppercase text-black disabled:cursor-not-allowed disabled:opacity-30;
+}
+
+.btn:hover {
+    @apply bg-slate-300 disabled:bg-slate-200;
+}
+
+.stat-number {
+    @apply block text-2xl font-bold text-blue-400;
+}
+
+.card-wrapper {
+    perspective: 800px;
+}
+.card-wrapper .card {
+    @apply transition-transform duration-1000;
+    transform-style: preserve-3d;
+}
+.card-wrapper .card.flipped {
+    @apply transition-transform duration-1000;
+    transform: rotateY(180deg);
+}
+.card-wrapper .card img {
+    @apply w-full;
+}
+.card-wrapper .card-front,
+.card-wrapper .card-back {
+    backface-visibility: hidden;
+}
+.card-wrapper .card-front {
+    @apply absolute top-0;
+    transform: rotateY(180deg);
+}
+
+.reveal {
+    @apply z-10 opacity-100 duration-1000;
+}
+
+.result.result--win {
+    @apply bg-purple-950;
+}
+
+.result.result--samecard {
+    @apply bg-yellow-700;
+}

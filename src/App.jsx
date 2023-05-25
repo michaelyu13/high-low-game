@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import './App.scss';
+import './App.css';
 
 const LOCAL_STORAGE_KEY = 'highLowGame.gameStats';
 
@@ -167,14 +167,14 @@ function App() {
     };
 
     return (
-        <div className="game-container">
-            <main>
-                <h1 className="game-name">High-Low Game</h1>
+        <div className="flex min-h-screen flex-col items-center lg:pt-16">
+            <main className="flex-1 space-y-8">
+                <h1 className="mt-4 text-3xl">High-Low Game</h1>
 
-                <section className="game-wrapper">
+                <section className="mx-4 space-y-4 border-4 border-double border-white p-4 md:mx-8 md:p-8">
                     <section>
                         <img
-                            className="current-card"
+                            className="inline min-h-full w-48 md:w-56 "
                             src={`${cardImagePath + currentCardImage}.png`}
                             alt=""
                             data-testid="currentCard"
@@ -184,7 +184,7 @@ function App() {
                     <section>
                         <button
                             type="button"
-                            className={`${isGameStarted && 'hide'}`}
+                            className={`btn ${isGameStarted && 'hidden'}`}
                             value="play"
                             disabled={currentCardNumber !== 0}
                             onClick={() => handlePlayClick()}
@@ -194,7 +194,7 @@ function App() {
 
                         <button
                             type="button"
-                            className={`${!isGameStarted && 'hide'}`}
+                            className={`btn ${!isGameStarted && 'hidden'}`}
                             value="lower"
                             disabled={isGameOver || currentCardRank === 1}
                             onClick={(e) => handleGuessClick(e)}
@@ -203,7 +203,7 @@ function App() {
                         </button>
                         <button
                             type="button"
-                            className={`${!isGameStarted && 'hide'}`}
+                            className={`btn ${!isGameStarted && 'hidden'}`}
                             value="higher"
                             disabled={isGameOver || currentCardRank === 13}
                             onClick={(e) => handleGuessClick(e)}
@@ -212,12 +212,12 @@ function App() {
                         </button>
                     </section>
 
-                    <h2
-                        className={`${!isGameStarted && 'invisible'}`}
+                    <div
+                        className={`text-2xl ${!isGameStarted && 'invisible'}`}
                         data-testid="currentCardNumber"
-                    >{`${currentCardNumber}/5`}</h2>
+                    >{`${currentCardNumber}/5`}</div>
 
-                    <div className="cards-to-guess-wrapper">
+                    <div className="grid grid-cols-5 gap-x-2 md:gap-x-8 lg:gap-x-16 ">
                         <div className="card-wrapper">
                             <div className={`card ${cardImages[0] && 'flipped'}`}>
                                 <div className="card-back">
@@ -271,21 +271,22 @@ function App() {
                     </div>
                 </section>
 
-                <section className="game-stats-wrapper" data-testid="gameStats">
-                    <h2>Game Stats</h2>
-                    <div className="game-stats">
+                <section className="mx-auto max-w-lg space-y-4 md:mt-16" data-testid="gameStats">
+                    <h2 className="text-2xl">Game Stats</h2>
+                    <div className="flex justify-around text-lg">
                         <h3>
-                            Win: <span className="stat">{gameStats.win}</span>
+                            Win: <span className="stat-number">{gameStats.win}</span>
                         </h3>
                         <h3>
-                            Drew Same Card: <span className="stat">{gameStats.sameCard}</span>
+                            Drew Same Card: <span className="stat-number">{gameStats.sameCard}</span>
                         </h3>
                         <h3>
-                            Lose: <span className="stat">{gameStats.lose}</span>
+                            Lose: <span className="stat-number">{gameStats.lose}</span>
                         </h3>
                     </div>
                     <button
                         type="button"
+                        className="btn"
                         disabled={isGameStarted && !isGameOver}
                         onClick={() => handleResetGameStatsClick()}
                     >
@@ -294,7 +295,7 @@ function App() {
                 </section>
             </main>
 
-            <footer>
+            <footer className="mb-8 mt-4 text-sm text-gray-400">
                 <p>
                     Card images used are from Boardgame Pack by{' '}
                     <a href="http://www.kenney.nl" target="_blank">
@@ -304,13 +305,19 @@ function App() {
             </footer>
 
             <div
-                className={`result ${isGameOver && result && `result--${result.toLowerCase()}`} ${
-                    isShowResult && 'reveal'
-                }`}
+                className={`result absolute left-0 right-0 top-48 z-[-1] mx-auto w-80 space-y-8 border-4 border-solid border-white bg-rose-900 p-8 opacity-0 shadow-[0_10px_10px_-5px_rgb(0,0,0)] transition-opacity duration-0 md:top-56 md:w-[520px]
+                    ${isGameOver && result && `result--${result.toLowerCase()}`}
+                    ${isShowResult && 'reveal'}`}
                 data-testid="result"
             >
-                <h2 className="result-message">{resultMessage}</h2>
-                <button type="button" value="playAgain" disabled={!isGameOver} onClick={() => handlePlayAgainClick()}>
+                <h2 className="whitespace-pre-wrap text-2xl">{resultMessage}</h2>
+                <button
+                    type="button"
+                    className="btn"
+                    value="playAgain"
+                    disabled={!isGameOver}
+                    onClick={() => handlePlayAgainClick()}
+                >
                     Play again
                 </button>
             </div>

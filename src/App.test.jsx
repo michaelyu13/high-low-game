@@ -43,8 +43,8 @@ describe('App', () => {
         const lowerButtonEl = screen.getByRole('button', { name: /^lower$/i });
         const higherButtonEl = screen.getByRole('button', { name: /^higher$/i });
 
-        expect(lowerButtonEl).toHaveClass('hide');
-        expect(higherButtonEl).toHaveClass('hide');
+        expect(lowerButtonEl).toHaveClass('hidden');
+        expect(higherButtonEl).toHaveClass('hidden');
     });
 
     test('Result reveal is not displayed', () => {
@@ -67,7 +67,7 @@ describe('App', () => {
         });
 
         expect(playButtonEl).toBeDisabled;
-        expect(playButtonEl).toHaveClass('hide');
+        expect(playButtonEl).toHaveClass('hidden');
         expect(lowerButtonEl).toBeInTheDocument();
         expect(higherButtonEl).toBeInTheDocument();
         expect(currentCardNumberEl.textContent).toMatch('1/5');
