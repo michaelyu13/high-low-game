@@ -98,7 +98,6 @@ function App() {
     const handleResetGameStatsClick = () => {
         setGameStats(initialGameStats);
         localStorage.clear();
-        location.reload();
     };
 
     const handlePlayAgainClick = () => {
