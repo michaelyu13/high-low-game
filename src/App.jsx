@@ -173,7 +173,7 @@ function App() {
                 <section className="mx-4 space-y-4 border-4 border-double border-white p-4 md:mx-8 md:p-8">
                     <section>
                         <img
-                            className="inline min-h-full w-48 md:w-56 "
+                            className="inline min-h-full w-48 shadow md:w-56"
                             src={`${cardImagePath + currentCardImage}.png`}
                             alt=""
                             data-testid="currentCard"
@@ -296,15 +296,25 @@ function App() {
 
             <footer className="mb-8 mt-4 text-sm text-gray-400">
                 <p>
-                    Card images used are from Boardgame Pack by{' '}
-                    <a className="hover:text-blue-400 hover:underline" href="http://www.kenney.nl" target="_blank">
+                    <a
+                        className="link-hover"
+                        href="https://www.freepik.com/free-photo/dark-green-texture_973582.htm#query=green%20card%20background&position=10&from_view=search&track=robertav1_2_sidr"
+                        target="_blank"
+                    >
+                        Dark green texture image by dashu83
+                    </a>{' '}
+                    on Freepik
+                </p>
+                <p>
+                    Card images are from Boardgame Pack by{' '}
+                    <a className="link-hover" href="http://www.kenney.nl" target="_blank">
                         Kenney
                     </a>
                 </p>
             </footer>
 
             <div
-                className={`result absolute left-0 right-0 top-48 z-[-1] mx-auto w-80 space-y-8 border-4 border-solid border-white bg-rose-900 px-4 py-8 opacity-0 shadow-[0_10px_10px_-5px_rgb(0,0,0)] transition-opacity duration-0 md:top-56 md:w-[520px]
+                className={`result absolute left-0 right-0 top-48 z-[-1] mx-auto w-80 space-y-8 border-4 border-solid border-white bg-rose-900 px-4 py-8 opacity-0 shadow transition-opacity duration-0 md:top-56 md:w-[520px]
                     ${isGameOver && result && `result--${result.toLowerCase()}`}
                     ${isShowResult && 'reveal'}`}
                 data-testid="result"

@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+.bg-texture {
+    background-color: #0c4e45;
+    background-image: url('./img/bg-dark-green-texture.jpg');
+    background-position: center;
+    background-size: cover;
+}
+
+.shadow {
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.8);
+}
+
 .btn {
     @apply m-2 rounded bg-slate-200 px-8 py-4 font-bold uppercase text-black disabled:cursor-not-allowed disabled:opacity-30;
 }
@@ -18,7 +29,7 @@
     perspective: 800px;
 }
 .card-wrapper .card {
-    @apply transition-transform duration-1000;
+    @apply shadow transition-transform duration-1000;
     transform-style: preserve-3d;
 }
 .card-wrapper .card.flipped {
@@ -47,4 +58,8 @@
 
 .result.result--samecard {
     @apply bg-yellow-700;
+}
+
+.link-hover {
+    @apply hover:text-blue-400 hover:underline;
 }
