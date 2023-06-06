@@ -1,14 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Attribution from './components/Attribution';
+import Cards from './components/Cards';
+import CurrentCard from './components/CurrentCard';
+import CurrentCardNumber from './components/CurrentCardNumber';
+import GameButtons from './components/GameButtons';
+import GameStats from './components/GameStats';
+import Result from './components/Result';
 import './App.css';
 
-const LOCAL_STORAGE_KEY = 'highLowGame.gameStats';
+export const CardContext = React.createContext();
+export const HighLowGameContext = React.createContext();
 
 function App() {
-    const cardBackImage = 'card-back';
+    const LOCAL_STORAGE_KEY = 'highLowGame.gameStats';
+    const CARD_BACK_IMAGE = 'card-back';
+    const CARD_IMAGE_PATH = 'src/img/cards/';
+
     const initialGameStats = { win: 0, lose: 0, sameCard: 0 };
 
     const [deckOfCards, setDeckOfCards] = useState([]);
-    const [currentCardImage, setCurrentCardImage] = useState(cardBackImage);
+    const [currentCardImage, setCurrentCardImage] = useState(CARD_BACK_IMAGE);
     const [cardImages, setCardImages] = useState([]);
     const [currentCardNumber, setCurrentCardNumber] = useState(0);
     const [currentCardRank, setCurrentCardRank] = useState(0);
@@ -23,10 +34,6 @@ function App() {
     const [isShowResult, setIsShowResult] = useState(false);
 
     const sideEffectRanOnceAfterInitialRender = useRef(false);
-
-    const cardImagePath = 'src/img/cards/';
-    const cardBackImageFile = `${cardImagePath + cardBackImage}.png`;
-    const tryAgainMessage = 'Do\u00A0you want to try\u00A0again?';
 
     useEffect(() => {
         if (sideEffectRanOnceAfterInitialRender.current === false) {
@@ -89,21 +96,10 @@ function App() {
         setIsGameStarted(true);
     };
 
-    const handleGuessClick = (e) => {
-        incrementCurrentCardNumber();
-        setPreviousCardRank(currentCardRank);
-        setGuess(e.target.value);
-    };
-
-    const handleResetGameStatsClick = () => {
-        setGameStats(initialGameStats);
-        localStorage.clear();
-    };
-
     const handlePlayAgainClick = () => {
         createDeckOfCards();
 
-        setCurrentCardImage(cardBackImage);
+        setCurrentCardImage(CARD_BACK_IMAGE);
         setCardImages([]);
         setCurrentCardNumber(1);
         setCurrentCardRank(0);
@@ -142,15 +138,17 @@ function App() {
     const updateResult = (result) => {
         setIsGameOver(true);
 
+        const TRY_AGAIN_MESSAGE = 'Do\u00A0you want to try\u00A0again?';
+
         switch (result) {
             case 'win':
-                setResultMessage(`Congratulations. You got them all\u00A0correct!\n${tryAgainMessage}`);
+                setResultMessage(`Congratulations. You got them all\u00A0correct!\n${TRY_AGAIN_MESSAGE}`);
                 break;
             case 'sameCard':
-                setResultMessage(`Unlucky. You got the same card\u00A0rank.\n${tryAgainMessage}`);
+                setResultMessage(`Unlucky. You got the same card\u00A0rank.\n${TRY_AGAIN_MESSAGE}`);
                 break;
             default:
-                setResultMessage(`Sorry, you did not guess\u00A0correctly.\n${tryAgainMessage}`);
+                setResultMessage(`Sorry, you did not guess\u00A0correctly.\n${TRY_AGAIN_MESSAGE}`);
         }
 
         const updatedStats = gameStats;
@@ -165,171 +163,63 @@ function App() {
         }, 1000);
     };
 
+    const cardContextValue = {
+        CARD_BACK_IMAGE,
+        CARD_IMAGE_PATH,
+        cardImages,
+        currentCardImage,
+    };
+
+    const highLowGameContextValue = {
+        createDeckOfCards,
+        currentCardNumber,
+        currentCardRank,
+        gameStats,
+        handlePlayClick,
+        handlePlayAgainClick,
+        incrementCurrentCardNumber,
+        initialGameStats,
+        isGameOver,
+        isGameStarted,
+        isShowResult,
+        result,
+        resultMessage,
+        setGameStats,
+        setGuess,
+        setIsGameStarted,
+        setPreviousCardRank,
+    };
+
     return (
         <div className="flex min-h-screen flex-col items-center lg:pt-16">
             <main className="flex-1 space-y-8">
                 <h1 className="mt-4 text-3xl">High-Low Game</h1>
 
                 <section className="mx-4 space-y-4 border-4 border-double border-white p-4 md:mx-8 md:p-8">
-                    <section>
-                        <img
-                            className="inline min-h-full w-48 shadow md:w-56"
-                            src={`${cardImagePath + currentCardImage}.png`}
-                            alt=""
-                            data-testid="currentCard"
-                        />
-                    </section>
+                    <CardContext.Provider value={cardContextValue}>
+                        <CurrentCard />
+                    </CardContext.Provider>
 
-                    <section>
-                        <button
-                            type="button"
-                            className={`btn ${isGameStarted && 'hidden'}`}
-                            value="play"
-                            disabled={currentCardNumber !== 0}
-                            onClick={() => handlePlayClick()}
-                        >
-                            Play
-                        </button>
+                    <HighLowGameContext.Provider value={highLowGameContextValue}>
+                        <GameButtons />
+                        <CurrentCardNumber />
+                    </HighLowGameContext.Provider>
 
-                        <button
-                            type="button"
-                            className={`btn ${!isGameStarted && 'hidden'}`}
-                            value="lower"
-                            disabled={isGameOver || currentCardRank === 1}
-                            onClick={(e) => handleGuessClick(e)}
-                        >
-                            Lower
-                        </button>
-                        <button
-                            type="button"
-                            className={`btn ${!isGameStarted && 'hidden'}`}
-                            value="higher"
-                            disabled={isGameOver || currentCardRank === 13}
-                            onClick={(e) => handleGuessClick(e)}
-                        >
-                            Higher
-                        </button>
-                    </section>
-
-                    <div
-                        className={`text-2xl ${!isGameStarted && 'invisible'}`}
-                        data-testid="currentCardNumber"
-                    >{`${currentCardNumber}/5`}</div>
-
-                    <div className="grid grid-cols-5 gap-x-2 md:gap-x-8 lg:gap-x-16 ">
-                        <div className="card-wrapper">
-                            <div className={`card ${cardImages[0] && 'flipped'}`}>
-                                <div className="card-back">
-                                    <img src={`${cardBackImageFile}`} alt="" />
-                                </div>
-                                <div className="card-front">
-                                    <img src={`${cardImagePath}${cardImages[0] || cardBackImage}.png`} alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card-wrapper">
-                            <div className={`card ${cardImages[1] && 'flipped'}`}>
-                                <div className="card-back">
-                                    <img src={`${cardBackImageFile}`} alt="" />
-                                </div>
-                                <div className="card-front">
-                                    <img src={`${cardImagePath}${cardImages[1] || cardBackImage}.png`} alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card-wrapper">
-                            <div className={`card ${cardImages[2] && 'flipped'}`}>
-                                <div className="card-back">
-                                    <img src={`${cardBackImageFile}`} alt="" />
-                                </div>
-                                <div className="card-front">
-                                    <img src={`${cardImagePath}${cardImages[2] || cardBackImage}.png`} alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card-wrapper">
-                            <div className={`card ${cardImages[3] && 'flipped'}`}>
-                                <div className="card-back">
-                                    <img src={`${cardBackImageFile}`} alt="" />
-                                </div>
-                                <div className="card-front">
-                                    <img src={`${cardImagePath}${cardImages[3] || cardBackImage}.png`} alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card-wrapper">
-                            <div className={`card ${cardImages[4] && 'flipped'}`}>
-                                <div className="card-back">
-                                    <img src={`${cardBackImageFile}`} alt="" />
-                                </div>
-                                <div className="card-front">
-                                    <img src={`${cardImagePath}${cardImages[4] || cardBackImage}.png`} alt="" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <CardContext.Provider value={cardContextValue}>
+                        <Cards />
+                    </CardContext.Provider>
                 </section>
 
-                <section className="mx-auto max-w-lg space-y-4 md:mt-16" data-testid="gameStats">
-                    <h2 className="text-2xl">Game Stats</h2>
-                    <div className="flex justify-around text-lg">
-                        <h3>
-                            Win: <span className="stat-number">{gameStats.win}</span>
-                        </h3>
-                        <h3>
-                            Drew Same Card: <span className="stat-number">{gameStats.sameCard}</span>
-                        </h3>
-                        <h3>
-                            Lose: <span className="stat-number">{gameStats.lose}</span>
-                        </h3>
-                    </div>
-                    <button
-                        type="button"
-                        className="btn"
-                        disabled={isGameStarted && !isGameOver}
-                        onClick={() => handleResetGameStatsClick()}
-                    >
-                        Reset game stats
-                    </button>
-                </section>
+                <HighLowGameContext.Provider value={highLowGameContextValue}>
+                    <GameStats />
+                </HighLowGameContext.Provider>
             </main>
 
-            <footer className="mb-8 mt-4 text-sm text-gray-400">
-                <p>
-                    <a
-                        className="link-hover"
-                        href="https://www.freepik.com/free-photo/dark-green-texture_973582.htm#query=green%20card%20background&position=10&from_view=search&track=robertav1_2_sidr"
-                        target="_blank"
-                    >
-                        Dark green texture image by dashu83
-                    </a>{' '}
-                    on Freepik
-                </p>
-                <p>
-                    Card images are from Boardgame Pack by{' '}
-                    <a className="link-hover" href="http://www.kenney.nl" target="_blank">
-                        Kenney
-                    </a>
-                </p>
-            </footer>
+            <Attribution />
 
-            <div
-                className={`result absolute left-0 right-0 top-48 z-[-1] mx-auto w-80 space-y-8 border-4 border-solid border-white bg-rose-900 px-4 py-8 opacity-0 shadow transition-opacity duration-0 md:top-56 md:w-[520px]
-                    ${isGameOver && result && `result--${result.toLowerCase()}`}
-                    ${isShowResult && 'reveal'}`}
-                data-testid="result"
-            >
-                <h2 className="whitespace-pre-wrap text-2xl">{resultMessage}</h2>
-                <button
-                    type="button"
-                    className="btn"
-                    value="playAgain"
-                    disabled={!isGameOver}
-                    onClick={() => handlePlayAgainClick()}
-                >
-                    Play again
-                </button>
-            </div>
+            <HighLowGameContext.Provider value={highLowGameContextValue}>
+                <Result />
+            </HighLowGameContext.Provider>
         </div>
     );
 }
