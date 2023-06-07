@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import { HighLowGameContext } from '../App';
 
 const CurrentCardNumber = () => {
-    const { currentCardNumber, isGameStarted } = useContext(HighLowGameContext);
+    const { TOTAL_CARDS_TO_PLAY, currentCardNumber, isGameStarted } = useContext(HighLowGameContext);
 
     return (
         <div
             className={`text-2xl ${!isGameStarted && 'invisible'}`}
             data-testid="currentCardNumber"
-        >{`${currentCardNumber}/5`}</div>
+        >{`${currentCardNumber}/${TOTAL_CARDS_TO_PLAY}`}</div>
     );
 };
 

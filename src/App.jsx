@@ -13,8 +13,9 @@ export const HighLowGameContext = React.createContext();
 
 function App() {
     const LOCAL_STORAGE_KEY = 'highLowGame.gameStats';
-    const CARD_BACK_IMAGE = 'card-back';
     const CARD_IMAGE_PATH = 'src/img/cards/';
+    const CARD_BACK_IMAGE = 'card-back';
+    const TOTAL_CARDS_TO_PLAY = 5;
 
     const initialGameStats = { win: 0, lose: 0, sameCard: 0 };
 
@@ -37,6 +38,8 @@ function App() {
 
     useEffect(() => {
         if (sideEffectRanOnceAfterInitialRender.current === false) {
+            createCardsToGuess();
+
             const gameStatsJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
 
             if (gameStatsJSON != null) {
@@ -62,7 +65,7 @@ function App() {
         const selectedCardImage = `${selectedCard.suit}-${selectedCard.rank}`;
 
         const updatedCardImages = cardImages;
-        updatedCardImages.push(selectedCardImage);
+        updatedCardImages[currentCardNumber - 1].card = selectedCardImage;
         setCardImages(updatedCardImages);
 
         setCurrentCardImage(selectedCardImage);
@@ -97,10 +100,10 @@ function App() {
     };
 
     const handlePlayAgainClick = () => {
+        createCardsToGuess();
         createDeckOfCards();
 
         setCurrentCardImage(CARD_BACK_IMAGE);
-        setCardImages([]);
         setCurrentCardNumber(1);
         setCurrentCardRank(0);
         setPreviousCardRank(0);
@@ -110,6 +113,19 @@ function App() {
         setResultMessage('');
         setIsGameOver(false);
         setIsShowResult(false);
+    };
+
+    const createCardsToGuess = () => {
+        let cardsToGuess = [];
+
+        for (let i = 0; i < TOTAL_CARDS_TO_PLAY; i++) {
+            cardsToGuess.push({
+                id: crypto.randomUUID(),
+                card: CARD_BACK_IMAGE,
+            });
+        }
+
+        setCardImages(cardsToGuess);
     };
 
     const createDeckOfCards = () => {
@@ -171,7 +187,7 @@ function App() {
     };
 
     const highLowGameContextValue = {
-        createDeckOfCards,
+        TOTAL_CARDS_TO_PLAY,
         currentCardNumber,
         currentCardRank,
         gameStats,
@@ -206,7 +222,7 @@ function App() {
                     </HighLowGameContext.Provider>
 
                     <CardContext.Provider value={cardContextValue}>
-                        <Cards />
+                        <Cards cardImages={cardImages} />
                     </CardContext.Provider>
                 </section>
 
