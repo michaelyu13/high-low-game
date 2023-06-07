@@ -8,7 +8,6 @@ import GameStats from './components/GameStats';
 import Result from './components/Result';
 import './App.css';
 
-export const CardContext = React.createContext();
 export const HighLowGameContext = React.createContext();
 
 function App() {
@@ -179,28 +178,14 @@ function App() {
         }, 1000);
     };
 
-    const cardContextValue = {
-        CARD_BACK_IMAGE,
-        CARD_IMAGE_PATH,
-        cardImages,
-        currentCardImage,
-    };
-
     const highLowGameContextValue = {
-        TOTAL_CARDS_TO_PLAY,
+        CARD_IMAGE_PATH,
         currentCardNumber,
         currentCardRank,
-        gameStats,
         handlePlayClick,
-        handlePlayAgainClick,
         incrementCurrentCardNumber,
-        initialGameStats,
         isGameOver,
         isGameStarted,
-        isShowResult,
-        result,
-        resultMessage,
-        setGameStats,
         setGuess,
         setIsGameStarted,
         setPreviousCardRank,
@@ -212,29 +197,28 @@ function App() {
                 <h1 className="mt-4 text-3xl">High-Low Game</h1>
 
                 <section className="mx-4 space-y-4 border-4 border-double border-white p-4 md:mx-8 md:p-8">
-                    <CardContext.Provider value={cardContextValue}>
-                        <CurrentCard />
-                    </CardContext.Provider>
-
                     <HighLowGameContext.Provider value={highLowGameContextValue}>
+                        <CurrentCard currentCardImage={currentCardImage} />
                         <GameButtons />
-                        <CurrentCardNumber />
+                        <CurrentCardNumber totalCardsToPlay={TOTAL_CARDS_TO_PLAY} />
+                        <Cards cardImages={cardImages} cardBackImage={CARD_BACK_IMAGE} />
                     </HighLowGameContext.Provider>
-
-                    <CardContext.Provider value={cardContextValue}>
-                        <Cards cardImages={cardImages} />
-                    </CardContext.Provider>
                 </section>
 
                 <HighLowGameContext.Provider value={highLowGameContextValue}>
-                    <GameStats />
+                    <GameStats gameStats={gameStats} setGameStats={setGameStats} initialGameStats={initialGameStats} />
                 </HighLowGameContext.Provider>
             </main>
 
             <Attribution />
 
             <HighLowGameContext.Provider value={highLowGameContextValue}>
-                <Result />
+                <Result
+                    handlePlayAgainClick={handlePlayAgainClick}
+                    isShowResult={isShowResult}
+                    result={result}
+                    resultMessage={resultMessage}
+                />
             </HighLowGameContext.Provider>
         </div>
     );

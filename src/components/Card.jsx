@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
-import { CardContext } from '../App';
+import { HighLowGameContext } from '../App';
 
-const Card = ({ card }) => {
-    const { CARD_IMAGE_PATH, CARD_BACK_IMAGE } = useContext(CardContext);
+const Card = ({ card, cardBackImage }) => {
+    const { CARD_IMAGE_PATH } = useContext(HighLowGameContext);
 
     return (
         <div className="card-wrapper">
-            <div className={`card ${card !== CARD_BACK_IMAGE && 'flipped'}`}>
+            <div className={`card ${card !== cardBackImage && 'flipped'}`}>
                 <div className="card-back">
-                    <img src={`${CARD_IMAGE_PATH + CARD_BACK_IMAGE}.png`} alt="" />
+                    <img src={`${CARD_IMAGE_PATH + cardBackImage}.png`} alt="" />
                 </div>
                 <div className="card-front">
                     <img src={`${CARD_IMAGE_PATH + card}.png`} alt="" />

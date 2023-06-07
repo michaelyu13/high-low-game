@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { HighLowGameContext } from '../App';
 
-const GameStats = () => {
-    const { gameStats, initialGameStats, isGameStarted, isGameOver, setGameStats } = useContext(HighLowGameContext);
+const GameStats = ({ gameStats, setGameStats, initialGameStats }) => {
+    const { isGameStarted, isGameOver } = useContext(HighLowGameContext);
 
     const handleResetGameStatsClick = () => {
         setGameStats(initialGameStats);
