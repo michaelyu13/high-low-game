@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { HighLowGameContext } from '../App';
+import { HighLowGameContext } from './Game';
 
 const Result = ({ handlePlayAgainClick, isShowResult, result, resultMessage }) => {
     const { isGameOver } = useContext(HighLowGameContext);

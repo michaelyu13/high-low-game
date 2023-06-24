@@ -63,3 +63,11 @@
 .link-hover {
     @apply hover:text-blue-400 hover:underline;
 }
+
+.ol-styles {
+    @apply mt-4 flex flex-col gap-4 text-left;
+}
+
+.ul-styles {
+    @apply ml-4 mt-4 list-disc;
+}
