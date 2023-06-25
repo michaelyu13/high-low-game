@@ -6,7 +6,7 @@ High-Low Game built using:
 -   React Testing Library
 -   Tailwind CSS
 
-<img width="1298" alt="" src="http://michaelyu.co.uk/assets/img/project-high-low-game.jpg">
+<img width="1298" alt="" src="http://michaelyu.co.uk/assets/img/project-high-low-game-v2.jpg">
 
 ## Live Demo
 
