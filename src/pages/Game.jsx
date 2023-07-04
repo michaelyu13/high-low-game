@@ -50,39 +50,39 @@ function Game() {
     }, []);
 
     useEffect(() => {
-        if (deckOfCards.length === 0) return;
+        if (deckOfCards.length) {
+            const randomCardFromDeck = Math.floor(Math.random() * deckOfCards.length);
 
-        const randomCardFromDeck = Math.floor(Math.random() * deckOfCards.length);
+            if (deckOfCards[randomCardFromDeck].rank === previousCardRank) {
+                updateResult('sameCard');
+            }
 
-        if (deckOfCards[randomCardFromDeck].rank === previousCardRank) {
-            updateResult('sameCard');
+            setDeckOfCards(deckOfCards.filter((card) => card.id !== deckOfCards[randomCardFromDeck].id));
+
+            const selectedCard = deckOfCards[randomCardFromDeck];
+            const selectedCardImage = selectedCard.id;
+
+            const updatedCardImages = cardImages;
+            updatedCardImages[currentCardNumber - 1].card = selectedCardImage;
+            setCardImages(updatedCardImages);
+
+            setCurrentCardImage(selectedCardImage);
+            setCurrentCardRank(selectedCard.rank);
         }
-
-        setDeckOfCards(deckOfCards.filter((card) => card.id !== deckOfCards[randomCardFromDeck].id));
-
-        const selectedCard = deckOfCards[randomCardFromDeck];
-        const selectedCardImage = selectedCard.id;
-
-        const updatedCardImages = cardImages;
-        updatedCardImages[currentCardNumber - 1].card = selectedCardImage;
-        setCardImages(updatedCardImages);
-
-        setCurrentCardImage(selectedCardImage);
-        setCurrentCardRank(selectedCard.rank);
     }, [currentCardNumber]);
 
     useEffect(() => {
-        if (currentCardRank === 0) return;
-
-        if (
-            (guess === 'lower' && currentCardRank > previousCardRank) ||
-            (guess === 'higher' && currentCardRank < previousCardRank)
-        ) {
-            updateResult('lose');
-        } else {
-            if (currentCardNumber === 1) return;
-
-            setCorrectGuesses((prevCorrectGuesses) => prevCorrectGuesses + 1);
+        if (currentCardRank !== 0) {
+            if (
+                (guess === 'lower' && currentCardRank > previousCardRank) ||
+                (guess === 'higher' && currentCardRank < previousCardRank)
+            ) {
+                updateResult('lose');
+            } else {
+                if (currentCardNumber !== 1) {
+                    setCorrectGuesses((prevCorrectGuesses) => prevCorrectGuesses + 1);
+                }
+            }
         }
     }, [currentCardRank]);
 
