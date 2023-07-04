@@ -119,7 +119,7 @@ function App() {
 
         for (let i = 0; i < TOTAL_CARDS_TO_PLAY; i++) {
             cardsToGuess.push({
-                id: crypto.randomUUID(),
+                id: i,
                 card: CARD_BACK_IMAGE,
             });
         }
@@ -136,7 +136,7 @@ function App() {
         cardSuits.forEach((cardSuit) => {
             cardRanks.forEach((cardRank) => {
                 playingCards.push({
-                    id: crypto.randomUUID(),
+                    id: `${cardSuit}-${cardRank}`,
                     suit: cardSuit,
                     rank: cardRank,
                 });

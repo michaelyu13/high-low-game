@@ -9,7 +9,3 @@ expect.extend(matchers);
 afterEach(() => {
     cleanup();
 });
-
-// need this for crypto.randomUUID() to work
-import { randomUUID } from 'node:crypto';
-crypto.randomUUID = randomUUID;
