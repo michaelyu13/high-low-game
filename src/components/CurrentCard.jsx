@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { HighLowGameContext } from './Game';
+import { HighLowGameContext } from '../pages/Game';
 
 const CurrentCard = ({ currentCardImage }) => {
     const { CARD_IMAGE_PATH } = useContext(HighLowGameContext);

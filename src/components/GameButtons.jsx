@@ -1,3 +1,4 @@
+import React from 'react';
 import ButtonPlay from './ButtonPlay';
 import ButtonGuesses from './ButtonGuesses';
 

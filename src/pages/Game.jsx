@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Cards from './Cards';
-import CurrentCard from './CurrentCard';
-import CurrentCardNumber from './CurrentCardNumber';
-import GameButtons from './GameButtons';
-import GameStats from './GameStats';
-import Result from './Result';
+import Cards from '../components/Cards';
+import CurrentCard from '../components/CurrentCard';
+import CurrentCardNumber from '../components/CurrentCardNumber';
+import GameButtons from '../components/GameButtons';
+import GameStats from '../components/GameStats';
+import Result from '../components/Result';
 
 import '../App.css';
 

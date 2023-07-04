@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { HighLowGameContext } from './Game';
+import { HighLowGameContext } from '../pages/Game';
 
 const ButtonPlay = () => {
     const { currentCardNumber, handlePlayClick, isGameStarted } = useContext(HighLowGameContext);

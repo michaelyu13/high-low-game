@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { HighLowGameContext } from './Game';
+import { HighLowGameContext } from '../pages/Game';
 
 const ButtonGuesses = () => {
     const { incrementCurrentCardNumber, isGameOver, isGameStarted, currentCardRank, setGuess, setPreviousCardRank } =

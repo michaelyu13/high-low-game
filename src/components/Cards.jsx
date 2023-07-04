@@ -1,3 +1,4 @@
+import React from 'react';
 import Card from './card';
 
 const Cards = ({ cardImages, cardBackImage }) => {

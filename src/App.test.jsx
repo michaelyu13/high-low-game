@@ -1,10 +1,11 @@
+import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 
-import App from './App';
+import Game from './pages/Game';
 
-describe('App', () => {
+describe('Game', () => {
     test('Play button is displayed and not disabled', () => {
-        render(<App />);
+        render(<Game />);
         const playButtonEl = screen.getByRole('button', { name: /^play$/i });
 
         expect(playButtonEl).toBeInTheDocument();
@@ -12,7 +13,7 @@ describe('App', () => {
     });
 
     test('Reset Game Stats button is displayed and not disabled', () => {
-        render(<App />);
+        render(<Game />);
         const resetGameStatsButtonEl = screen.getByRole('button', { name: /^reset game stats$/i });
 
         expect(resetGameStatsButtonEl).toBeInTheDocument();
@@ -20,26 +21,26 @@ describe('App', () => {
     });
 
     test('Current card is shown', () => {
-        render(<App />);
+        render(<Game />);
         const currentCard = screen.getByTestId('currentCard');
         expect(currentCard).toBeInTheDocument();
     });
 
     test('5 cards to guess are shown', () => {
-        const { container } = render(<App />);
+        const { container } = render(<Game />);
         const cardsToGuess = container.getElementsByClassName('card-wrapper');
 
         expect(cardsToGuess).toHaveLength(5);
     });
 
     test('Game Stats section is shown', () => {
-        render(<App />);
+        render(<Game />);
         const gameStats = screen.getByTestId('gameStats');
         expect(gameStats).toBeInTheDocument();
     });
 
     test('Lower and Higher button are not displayed', () => {
-        render(<App />);
+        render(<Game />);
         const lowerButtonEl = screen.getByRole('button', { name: /^lower$/i });
         const higherButtonEl = screen.getByRole('button', { name: /^higher$/i });
 
@@ -48,13 +49,13 @@ describe('App', () => {
     });
 
     test('Result reveal is not displayed', () => {
-        render(<App />);
+        render(<Game />);
         const revealEl = screen.getByTestId('result');
         expect(revealEl).not.toHaveClass('reveal');
     });
 
     test('Play button starts the game', () => {
-        render(<App />);
+        render(<Game />);
         const playButtonEl = screen.getByRole('button', { name: /^play$/i });
 
         fireEvent.click(playButtonEl);

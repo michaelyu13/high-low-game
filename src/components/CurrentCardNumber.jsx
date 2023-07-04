@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { HighLowGameContext } from './Game';
+import { HighLowGameContext } from '../pages/Game';
 
 const CurrentCardNumber = ({ totalCardsToPlay }) => {
     const { currentCardNumber, isGameStarted } = useContext(HighLowGameContext);
