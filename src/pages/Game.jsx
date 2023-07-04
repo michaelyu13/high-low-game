@@ -10,7 +10,7 @@ import '../App.css';
 
 export const HighLowGameContext = React.createContext();
 
-function App() {
+function Game() {
     const LOCAL_STORAGE_KEY = 'highLowGame.gameStats';
     const CARD_IMAGE_PATH = 'src/img/cards/';
     const CARD_BACK_IMAGE = 'card-back';
@@ -61,7 +61,7 @@ function App() {
         setDeckOfCards(deckOfCards.filter((card) => card.id !== deckOfCards[randomCardFromDeck].id));
 
         const selectedCard = deckOfCards[randomCardFromDeck];
-        const selectedCardImage = `${selectedCard.suit}-${selectedCard.rank}`;
+        const selectedCardImage = selectedCard.id;
 
         const updatedCardImages = cardImages;
         updatedCardImages[currentCardNumber - 1].card = selectedCardImage;
@@ -211,4 +211,4 @@ function App() {
     );
 }
 
-export default App;
+export default Game;
