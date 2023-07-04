@@ -4,20 +4,12 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import Game from './pages/Game';
 
 describe('Game', () => {
-    test('Play button is displayed and not disabled', () => {
+    test('Play button is displayed and be enabled', () => {
         render(<Game />);
         const playButtonEl = screen.getByRole('button', { name: /^play$/i });
 
         expect(playButtonEl).toBeInTheDocument();
-        expect(playButtonEl).not.toBeDisabled();
-    });
-
-    test('Reset Game Stats button is displayed and not disabled', () => {
-        render(<Game />);
-        const resetGameStatsButtonEl = screen.getByRole('button', { name: /^reset game stats$/i });
-
-        expect(resetGameStatsButtonEl).toBeInTheDocument();
-        expect(resetGameStatsButtonEl).not.toBeDisabled();
+        expect(playButtonEl).toBeEnabled();
     });
 
     test('Current card is shown', () => {
@@ -39,7 +31,15 @@ describe('Game', () => {
         expect(gameStats).toBeInTheDocument();
     });
 
-    test('Lower and Higher button are not displayed', () => {
+    test('Reset Game Stats button is displayed and be enabled', () => {
+        render(<Game />);
+        const resetGameStatsButtonEl = screen.getByRole('button', { name: /^reset game stats$/i });
+
+        expect(resetGameStatsButtonEl).toBeInTheDocument();
+        expect(resetGameStatsButtonEl).toBeEnabled();
+    });
+
+    test('Lower and Higher buttons are not displayed', () => {
         render(<Game />);
         const lowerButtonEl = screen.getByRole('button', { name: /^lower$/i });
         const higherButtonEl = screen.getByRole('button', { name: /^higher$/i });
@@ -48,7 +48,7 @@ describe('Game', () => {
         expect(higherButtonEl).toHaveClass('hidden');
     });
 
-    test('Result reveal is not displayed', () => {
+    test('Result modal is not displayed', () => {
         render(<Game />);
         const revealEl = screen.getByTestId('result');
         expect(revealEl).not.toHaveClass('reveal');
