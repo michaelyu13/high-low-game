@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Cards from '../components/Cards';
 import CurrentCard from '../components/CurrentCard';
 import CurrentCardNumber from '../components/CurrentCardNumber';
@@ -50,7 +50,7 @@ function Game() {
     }, []);
 
     useEffect(() => {
-        if (deckOfCards.length) {
+        if (deckOfCards.length > 0) {
             const randomCardFromDeck = Math.floor(Math.random() * deckOfCards.length);
 
             if (deckOfCards[randomCardFromDeck].rank === previousCardRank) {
