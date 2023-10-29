@@ -1,7 +1,7 @@
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
 
-import Game from './pages/Game';
+import Game from '../pages/Game';
 
 describe('Game', () => {
     test('Play button is displayed and be enabled', () => {
